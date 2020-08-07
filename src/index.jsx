@@ -5,6 +5,7 @@ import Root from './components/root'
 
 import configureStore from './store/store';
 import { receiveTodo, receiveTodos } from './actions/todoActions';
+import { receiveStep } from './actions/stepActions';
 import { allTodos } from './reducers/selectors'
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,5 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.receiveTodo = receiveTodo;
   window.receiveTodos = receiveTodos;
   window.allTodos = allTodos;
+  window.receiveStep = receiveStep;
   ReactDOM.render(<Root store={configureStore()} />, root)
 })

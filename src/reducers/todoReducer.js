@@ -1,7 +1,7 @@
 import { RECEIVE_TODO, RECEIVE_TODOS, TOGGLE_TODO, REMOVE_TODO } from '../actions/todoActions';
 
 const today = new Date();
-const initialState = {
+const _initialState = {
   todos: {
     1: {
       id: 1,
@@ -20,15 +20,17 @@ const initialState = {
   }
 };
 
-const todoReducer = (previousState = initialState.todos, action) => {
+const todoReducer = (previousState = _initialState.todos, action) => {
   Object.freeze(previousState)
   let newState = Object.assign({}, previousState);
+
   const todoItem = action.todo;
   let todoHash = {};
+
   switch (action.type) {
     case RECEIVE_TODO:
       todoHash[todoItem["id"]] = todoItem;
-      return Object.assign({}, previousState, todoHash);
+      return Object.assign({}, newState, todoHash);
     case RECEIVE_TODOS:
       let todosHash = {};
       action.todos.map((todo) => todosHash[todo.id] = todo);
