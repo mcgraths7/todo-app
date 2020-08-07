@@ -3,8 +3,13 @@ import { connect } from 'react-redux';
 import { receiveStep } from '../../actions/stepActions';
 import StepList from './stepList';
 
-const mapDispatchToProps = (dispatch) => ({
-  receiveStep: (step) => dispatch(receiveStep(step)),
+const mapStateToProps = (state, todoId) => ({
+  steps: state.steps,
+  todoId,
 });
 
-export default connect(null, mapDispatchToProps)(StepList);
+const mapDispatchToProps = (dispatch, { step }) => ({
+  receiveStep: () => dispatch(receiveStep(step)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepList);

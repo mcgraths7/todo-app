@@ -1,9 +1,14 @@
 import React from 'react';
 
-const StepList = (props) => (
-  <ul>
-    {props}
-  </ul>
+import StepListItemContainer from './stepListItemContainer';
+
+const StepList = ({ steps }) => (
+  <div>
+    <ul>
+      {steps.map((step) => <StepListItemContainer step={step} />)}
+    </ul>
+    {/* <StepForm /> */}
+  </div>
 );
 
 export default StepList;

@@ -1,7 +1,9 @@
 import React from 'react';
 
+import StepList from '../../stepList/stepList';
+
 const TodoListItemDetailView = (props) => {
-  const { todo } = props;
+  const { todo, receiveSteps } = props;
   return (
     <div>
       <p>{todo.body}</p>
@@ -15,9 +17,7 @@ const TodoListItemDetailView = (props) => {
         </small>
       </p>
       <h4><small>Sub-Tasks</small></h4>
-      <ul>
-        {/* Add steps here */}
-      </ul>
+      <StepList steps={receiveSteps} />
     </div>
   );
 };

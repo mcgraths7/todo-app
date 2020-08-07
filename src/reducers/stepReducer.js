@@ -1,49 +1,54 @@
-import { RECEIVE_STEP, RECEIVE_STEPS, TOGGLE_STEP, REMOVE_STEP } from '../actions/stepActions';
+import {
+  RECEIVE_STEP,
+  RECEIVE_STEPS,
+  TOGGLE_STEP,
+  REMOVE_STEP,
+} from '../actions/stepActions';
 
-const _initialState = {
+const initialState = {
   steps: {
     1: {
       id: 1,
       todoId: 1,
-      title: "get sponge",
-      isDone: false
+      title: 'get sponge',
+      isDone: false,
     },
     2: {
       id: 2,
       todoId: 1,
-      title: "get bucket",
-      isDone: false
+      title: 'get bucket',
+      isDone: false,
     },
     3: {
       id: 3,
       todoId: 1,
-      title: "fill bucket with soapy water",
-      isDone: false
+      title: 'fill bucket with soapy water',
+      isDone: false,
     },
     4: {
       id: 4,
       todoId: 1,
-      title: "begin washing",
-      isDone: false
-    }
-  }
+      title: 'begin washing',
+      isDone: false,
+    },
+  },
 };
 
-const stepReducer = (previousState = _initialState.steps, action) => {
+const stepReducer = (previousState = initialState.steps, action) => {
   Object.freeze(previousState);
-  let newState = Object.assign({}, previousState);
+  const newState = { ...previousState }
 
-  let stepItem = action.step;
-  let stepHash = {};
-
+  const stepItem = action.step;
+  const stepHash = {};
+  const stepsHash = {};
   switch (action.type) {
     case RECEIVE_STEP:
-      stepHash[stepItem["id"]] = stepItem;
-      return Object.assign({}, newState, stepHash)
+      stepHash[stepItem.id] = stepItem;
+      return { ...newState, stepHash };
     case RECEIVE_STEPS:
-      let stepsHash = {}
-      action.steps.map( step => stepsHash[step.id] = step);
-      return Object.assign(newState, todosHash);
+      return action.steps.map((step) => {
+        stepsHash[step.id] = step;
+      }
     case TOGGLE_STEP:
       stepItem.isDone = !stepItem.isDone;
       stepHash[stepItem.id] - stepItem;
