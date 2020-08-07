@@ -1,5 +1,5 @@
 {
-  "name": "clickcounter",
+  "name": "todo-app",
   "version": "1.0.0",
   "main": "index.jsx",
   "author": "Steven McGrath",
@@ -19,6 +19,6 @@
     "redux": "^4.0.5"
   },
   "scripts": {
-    "build": "webpack --watch --mode development"
+    "watch": "webpack --watch --mode development"
   }
 }
