@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TodoListItem from './todoListItem';
+import TodoListItem from '../todoItem/todoListItem';
 import TodoForm from './todoForm'
 
 const TodoList = ( props ) => {
