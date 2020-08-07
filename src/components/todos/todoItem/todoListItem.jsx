@@ -6,47 +6,50 @@ class TodoListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      detail: false
-    }
+      detail: false,
+    };
     this.toggleTodo = this.toggleTodo.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
     this.toggleDetail = this.toggleDetail.bind(this);
   }
+
   toggleTodo(e) {
-    e.preventDefault()
-    this.props.toggleTodo(this.props.todo)
+    const { todo, toggleTodo } = this.props;
+    e.preventDefault();
+    toggleTodo(todo);
   }
 
   removeTodo(e) {
+    const { todo, removeTodo } = this.props;
     e.preventDefault();
-    this.props.removeTodo(this.props.todo);
+    removeTodo(todo);
   }
 
   toggleDetail(e) {
     e.preventDefault();
-    let detail = this.state.detail;
+    const { detail } = this.state;
     this.setState({
-      detail: !detail
+      detail: !detail,
     });
   }
-  
+
   render() {
     const { todo } = this.props;
+    const { detail } = this.state;
     return (
       <li>
-        <h4 onClick={this.toggleDetail}>
-          {todo.title}
-        </h4>
-        {this.state.detail ? <TodoListItemDetailView todo={todo} /> : ""}
+        <h3>{todo.title}</h3>
+        {detail ? <TodoListItemDetailView todo={todo} /> : ''}
         <p>
           <span>
-            <button onClick={this.toggleTodo}>{todo.isDone ? "Undo" : "Done"}</button>
-            <button onClick={this.removeTodo}>Remove</button>
+            <button type="button" onClick={this.toggleDetail}>Show/Hide Details</button>
+            <button type="button" onClick={this.toggleTodo}>{todo.isDone ? 'Undo' : 'Done'}</button>
+            <button type="button" onClick={this.removeTodo}>Remove</button>
           </span>
         </p>
       </li>
-    )
+    );
   }
 }
 
-export default TodoListItem
+export default TodoListItem;

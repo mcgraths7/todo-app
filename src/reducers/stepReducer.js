@@ -4,25 +4,25 @@ const _initialState = {
   steps: {
     1: {
       id: 1,
-      todo_id: 1,
+      todoId: 1,
       title: "get sponge",
       isDone: false
     },
     2: {
       id: 2,
-      todo_id: 1,
+      todoId: 1,
       title: "get bucket",
       isDone: false
     },
     3: {
       id: 3,
-      todo_id: 1,
+      todoId: 1,
       title: "fill bucket with soapy water",
       isDone: false
     },
     4: {
       id: 4,
-      todo_id: 1,
+      todoId: 1,
       title: "begin washing",
       isDone: false
     }
