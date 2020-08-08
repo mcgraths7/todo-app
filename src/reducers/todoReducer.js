@@ -1,4 +1,9 @@
-import { RECEIVE_TODO, RECEIVE_TODOS, TOGGLE_TODO, REMOVE_TODO } from '../actions/todoActions';
+import {
+  RECEIVE_TODO,
+  RECEIVE_TODOS,
+  TOGGLE_TODO,
+  REMOVE_TODO,
+} from '../actions/todoActions';
 
 const today = new Date();
 const initialState = {
@@ -16,8 +21,8 @@ const initialState = {
       body: 'with shampoo',
       completeBy: today.toLocaleDateString(),
       isDone: true,
-    }
-  }
+    },
+  },
 };
 
 const todoReducer = (previousState = initialState.todos, action) => {

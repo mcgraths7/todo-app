@@ -1,5 +1,5 @@
-const generateUniqueId = () => {
-  return new Date().getTime();
-}
+const generateUniqueId = () => (
+  new Date().getTime()
+);
 
 export default generateUniqueId;

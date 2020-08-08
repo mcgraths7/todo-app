@@ -1,11 +1,11 @@
 import React from 'react';
 
-import TodoListContainer from '../components/todos/todoList/todoListContainer';
+import TodoListContainer from './todos/todoList/todoListContainer';
 
 const App = () => (
   <div>
     <TodoListContainer />
   </div>
-)
+);
 
-export default App
+export default App;

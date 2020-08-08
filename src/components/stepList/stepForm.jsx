@@ -18,11 +18,11 @@ class StepForm extends React.Component {
     this.setState(() => ({
       title,
     }));
-    const step = {
-      id: generateUniqueId(),
-      title,
-      isDone: false,
-    }
+    // const step = {
+    //   id: generateUniqueId(),
+    //   title,
+    //   isDone: false,
+    // }
   }
 
   handleChange(e) {

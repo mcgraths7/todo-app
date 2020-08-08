@@ -36,29 +36,29 @@ const initialState = {
 
 const stepReducer = (previousState = initialState.steps, action) => {
   Object.freeze(previousState);
-  const newState = { ...previousState }
+  const newState = { ...previousState };
 
   const stepItem = action.step;
   const stepHash = {};
-  const stepsHash = {};
   switch (action.type) {
     case RECEIVE_STEP:
       stepHash[stepItem.id] = stepItem;
       return { ...newState, stepHash };
     case RECEIVE_STEPS:
-      return action.steps.map((step) => {
-        stepsHash[step.id] = step;
-      }
+      action.steps.forEach((step) => {
+        newState[step.id] = step;
+      });
+      return newState;
     case TOGGLE_STEP:
       stepItem.isDone = !stepItem.isDone;
-      stepHash[stepItem.id] - stepItem;
-      return Object.assign({}, newState, stepHash);
+      stepHash[stepItem.id] = stepItem;
+      return { ...newState, stepHash };
     case REMOVE_STEP:
       delete newState[stepItem.id];
       return newState;
     default:
       return previousState;
   }
-}
+};
 
 export default stepReducer;
