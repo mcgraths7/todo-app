@@ -1,50 +1,44 @@
-import { RECEIVE_TODO, RECEIVE_TODOS, TOGGLE_TODO, REMOVE_TODO } from '../actions/todoActions';
+import {
+  RECEIVE_TODO,
+  REMOVE_TODO,
+} from '../actions/todoActions';
 
 const today = new Date();
-const _initialState = {
+const initialState = {
   todos: {
     1: {
       id: 1,
-      title: "wash car",
-      body: "with soap",
+      title: 'wash car',
+      body: 'with soap',
       completeBy: today.toLocaleDateString(),
-      isDone: false
+      isDone: false,
     },
     2: {
       id: 2,
-      title: "wash dog",
-      body: "with shampoo",
+      title: 'wash dog',
+      body: 'with shampoo',
       completeBy: today.toLocaleDateString(),
-      isDone: true
-    }
-  }
+      isDone: true,
+    },
+  },
 };
 
-const todoReducer = (previousState = _initialState.todos, action) => {
-  Object.freeze(previousState)
-  let newState = Object.assign({}, previousState);
+const todoReducer = (previousState = initialState.todos, action) => {
+  Object.freeze(previousState);
+  const newState = { ...previousState };
 
-  const todoItem = action.todo;
-  let todoHash = {};
+  const todoItem = { ...action.todo };
 
   switch (action.type) {
     case RECEIVE_TODO:
-      todoHash[todoItem["id"]] = todoItem;
-      return Object.assign({}, newState, todoHash);
-    case RECEIVE_TODOS:
-      let todosHash = {};
-      action.todos.map((todo) => todosHash[todo.id] = todo);
-      return Object.assign(newState, todosHash);
-    case TOGGLE_TODO:
-      todoItem.isDone = !todoItem.isDone;
-      todoHash[todoItem.id] = todoItem;
-      return Object.assign({}, newState, todoHash);
+      newState[todoItem.id] = todoItem;
+      return { ...newState };
     case REMOVE_TODO:
-      delete newState[todoItem.id]
-      return newState;
+      delete newState[todoItem.id];
+      return { ...newState };
     default:
       return previousState;
   }
-}
+};
 
 export default todoReducer;

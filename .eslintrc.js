@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     browser: true,
-    es2020: true,
+    es6: true,
   },
   extends: [
     'plugin:react/recommended',
@@ -11,12 +11,13 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 11,
+    ecmaVersion: 2019,
     sourceType: 'module',
   },
   plugins: [
     'react',
   ],
   rules: {
+    "react/prop-types": 0,
   },
 };
