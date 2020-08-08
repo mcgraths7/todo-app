@@ -1,14 +1,18 @@
 import React from 'react';
 
 const StepListItem = (props) => {
-  const { step } = props;
+  const { step, removeStep } = props;
+  const completeStep = () => {
+    removeStep(step);
+  };
   return (
-    <li>
-      <h4>{step.title}</h4>
-      <p>{step.body}</p>
-      <button type="button">
-        {step.isDone ? 'Undo' : 'Done'}
-      </button>
+    <li key={step.id}>
+      <h4>
+        {step.title}
+        <span>
+          <button type="button" onClick={completeStep}>Complete</button>
+        </span>
+      </h4>
     </li>
   );
 };

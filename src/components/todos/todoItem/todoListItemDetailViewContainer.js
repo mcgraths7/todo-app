@@ -1,13 +1,17 @@
 import { connect } from 'react-redux';
 
 import TodoListItemDetailView from './todoListItemDetailView';
-import { removeTodo, toggleTodo } from '../../../actions/todoActions';
-import { receiveSteps } from '../../../actions/stepActions';
+import { removeTodo, toggleTodo, receiveTodo } from '../../../actions/todoActions';
+import { todoById, allTodos } from '../../../reducers/selectors';
+
+const mapStateToProps = (state, { todo }) => ({
+  todo: todoById(allTodos(state), todo.id)[0],
+});
 
 const mapDispatchToProps = (dispatch) => ({
   removeTodo: (todo) => dispatch(removeTodo(todo)),
   toggleTodo: (todo) => dispatch(toggleTodo(todo)),
-  receiveSteps: (steps) => dispatch(receiveSteps(steps)),
+  receiveTodo: (todo) => dispatch(receiveTodo(todo)),
 });
 
-export default connect(null, mapDispatchToProps)(TodoListItemDetailView);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoListItemDetailView);

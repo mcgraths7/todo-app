@@ -8,27 +8,34 @@ class StepForm extends React.Component {
     this.state = {
       title: '',
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.addStep = this.addStep.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
+    this.resetTitle = this.resetTitle.bind(this);
   }
 
-  handleSubmit(e) {
+  addStep(e) {
     e.preventDefault();
     const { title } = this.state;
-    this.setState(() => ({
+    const { todoId, receiveStep } = this.props;
+    const stepHash = {
+      id: generateUniqueId(),
+      todoId,
       title,
-    }));
-    // const step = {
-    //   id: generateUniqueId(),
-    //   title,
-    //   isDone: false,
-    // }
+    };
+    receiveStep(stepHash);
+    this.resetTitle();
   }
 
-  handleChange(e) {
-    this.setState(() => ({
-      title: e.target.value,
-    }));
+  updateTitle(e) {
+    this.setState({
+      title: e.currentTarget.value,
+    });
+  }
+
+  resetTitle() {
+    this.setState({
+      title: '',
+    });
   }
 
   render() {
@@ -37,8 +44,8 @@ class StepForm extends React.Component {
       <form>
         <label htmlFor="stepTitle">
           Title
-          <input type="text" onChange={this.handleChange} value={title} />
-          <button type="button" onClick={this.handleSubmit}>Add!</button>
+          <input type="text" onChange={this.updateTitle} value={title} />
+          <button type="button" onClick={this.addStep}>Add!</button>
         </label>
       </form>
     );

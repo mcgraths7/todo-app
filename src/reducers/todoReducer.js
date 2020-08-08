@@ -1,7 +1,5 @@
 import {
   RECEIVE_TODO,
-  RECEIVE_TODOS,
-  TOGGLE_TODO,
   REMOVE_TODO,
 } from '../actions/todoActions';
 
@@ -29,26 +27,15 @@ const todoReducer = (previousState = initialState.todos, action) => {
   Object.freeze(previousState);
   const newState = { ...previousState };
 
-  const todoItem = action.todo;
-  const todoHash = {};
-  const todosHash = {};
+  const todoItem = { ...action.todo };
 
   switch (action.type) {
     case RECEIVE_TODO:
-      todoHash[todoItem.id] = todoItem;
-      return { ...previousState, todoHash };
-    case RECEIVE_TODOS:
-      action.todos.forEach((todo) => {
-        newState[todo.id] = todo;
-      });
-      return Object.assign(newState, todosHash);
-    case TOGGLE_TODO:
-      todoItem.isDone = !todoItem.isDone;
-      todoHash[todoItem.id] = todoItem;
-      return { ...newState, todoHash };
+      newState[todoItem.id] = todoItem;
+      return { ...newState };
     case REMOVE_TODO:
       delete newState[todoItem.id];
-      return newState;
+      return { ...newState };
     default:
       return previousState;
   }
