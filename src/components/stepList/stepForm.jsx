@@ -11,6 +11,7 @@ class StepForm extends React.Component {
     this.addStep = this.addStep.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
     this.resetTitle = this.resetTitle.bind(this);
+    this.addStepOnReturn = this.addStepOnReturn.bind(this);
   }
 
   addStep(e) {
@@ -24,6 +25,12 @@ class StepForm extends React.Component {
     };
     receiveStep(stepHash);
     this.resetTitle();
+  }
+
+  addStepOnReturn(e) {
+    if (e.keyCode === 13) {
+      this.addStep(e);
+    }
   }
 
   updateTitle(e) {
@@ -44,7 +51,7 @@ class StepForm extends React.Component {
       <form>
         <label htmlFor="stepTitle">
           Title
-          <input type="text" onChange={this.updateTitle} value={title} />
+          <input type="text" onChange={this.updateTitle} onKeyDown={this.addStepOnReturn} value={title} />
           <button type="button" onClick={this.addStep}>Add!</button>
         </label>
       </form>

@@ -15,6 +15,7 @@ class TodoForm extends React.Component {
     this.updateCompleteBy = this.updateCompleteBy.bind(this);
     this.addTodo = this.addTodo.bind(this);
     this.resetState = this.resetState.bind(this);
+    this.addTodoOnReturn = this.addTodoOnReturn.bind(this);
   }
 
   resetState() {
@@ -58,27 +59,33 @@ class TodoForm extends React.Component {
     this.resetState();
   }
 
+  addTodoOnReturn(e) {
+    if (e.keyCode === 13) {
+      this.addTodo(e);
+    }
+  }
+
   render() {
     const { title, body, completeBy } = this.state;
     return (
       <form>
         <label htmlFor="todoTitle">
           Title
-          <input type="text" name="todoTitle" onChange={this.updateTitle} value={title} />
+          <input type="text" name="todoTitle" onChange={this.updateTitle} onKeyDown={this.addTodoOnReturn} value={title} />
         </label>
 
         <br />
 
         <label htmlFor="todoBody">
           Body
-          <input type="text" name="todoBody" onChange={this.updateBody} value={body} />
+          <input type="text" name="todoBody" onChange={this.updateBody} onKeyDown={this.addTodoOnReturn} value={body} />
         </label>
 
         <br />
 
         <label htmlFor="todoCompleteBy">
           Complete By
-          <input type="date" name="todoCompleteBy" onChange={this.updateCompleteBy} value={completeBy} />
+          <input type="date" name="todoCompleteBy" onChange={this.updateCompleteBy} onKeyDown={this.addTodoOnReturn} value={completeBy} />
         </label>
 
         <br />
