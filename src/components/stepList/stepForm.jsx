@@ -20,8 +20,9 @@ class StepForm extends React.Component {
       todo_id: todo.id,
       title,
     };
-    createStep(todo, step);
-    this.resetTitle();
+    createStep(todo, step).then(() => {
+      this.resetTitle();
+    });
   }
 
   addStepOnReturn(e) {

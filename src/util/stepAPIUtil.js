@@ -9,9 +9,7 @@ export const createStep = (todo, step) => (
   $.ajax({
     method: 'POST',
     url: `api/todos/${todo.id}/steps`,
-    data: {
-      step,
-    },
+    data: { todo, step },
   })
 );
 
