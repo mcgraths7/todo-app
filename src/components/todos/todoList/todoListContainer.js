@@ -10,6 +10,9 @@ import {
   receiveErrors,
   clearErrors,
 } from '../../../actions/errorActions';
+import {
+  fetchSteps,
+} from '../../../actions/stepActions';
 import { allTodos } from '../../../reducers/selectors';
 
 const mapStateToProps = (state) => ({
@@ -19,6 +22,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTodos: () => dispatch(fetchTodos()),
+  fetchSteps: (todo) => dispatch(fetchSteps(todo)),
   createTodo: (todo) => dispatch(createTodo(todo)),
   destroyTodo: (todo) => dispatch(destroyTodo(todo)),
   receiveErrors: (errors) => dispatch(receiveErrors(errors)),

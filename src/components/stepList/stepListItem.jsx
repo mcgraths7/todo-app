@@ -1,12 +1,12 @@
 import React from 'react';
 
 const StepListItem = (props) => {
-  const { step, removeStep } = props;
+  const { todo, step, destroyStep } = props;
   const completeStep = () => {
-    removeStep(step);
+    destroyStep(todo, step);
   };
   return (
-    <li key={step.id}>
+    <li key={step}>
       <h4>
         {step.title}
         <span>

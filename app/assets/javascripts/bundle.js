@@ -32135,7 +32135,7 @@ var clearErrors = function clearErrors() {
 /*!************************************!*\
   !*** ./src/actions/stepActions.js ***!
   \************************************/
-/*! exports provided: RECEIVE_STEP, RECEIVE_STEPS, REMOVE_STEP, receiveStep, receiveSteps, removeStep */
+/*! exports provided: RECEIVE_STEP, RECEIVE_STEPS, REMOVE_STEP, receiveStep, receiveSteps, removeStep, fetchSteps, createStep, destroyStep */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32146,9 +32146,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveStep", function() { return receiveStep; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveSteps", function() { return receiveSteps; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeStep", function() { return removeStep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchSteps", function() { return fetchSteps; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createStep", function() { return createStep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyStep", function() { return destroyStep; });
+/* harmony import */ var _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/stepAPIUtil */ "./src/util/stepAPIUtil.js");
+/* harmony import */ var _errorActions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./errorActions */ "./src/actions/errorActions.js");
+
+
 var RECEIVE_STEP = 'RECEIVE_STEP';
 var RECEIVE_STEPS = 'RECEIVE_STEPS';
-var REMOVE_STEP = 'REMOVE_STEP';
+var REMOVE_STEP = 'REMOVE_STEP'; // Synchronoous Actions
+
 var receiveStep = function receiveStep(step) {
   return {
     type: RECEIVE_STEP,
@@ -32165,6 +32173,31 @@ var removeStep = function removeStep(step) {
   return {
     type: REMOVE_STEP,
     step: step
+  };
+}; // Asynchronous Actions
+
+var fetchSteps = function fetchSteps(todo) {
+  return function (dispatch) {
+    return _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_0__["fetchSteps"](todo).then(function (steps) {
+      return dispatch(receiveSteps(steps));
+    });
+  };
+};
+var createStep = function createStep(todo, step) {
+  return function (dispatch) {
+    return _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_0__["createStep"](todo, step).then(function (step) {
+      dispatch(receiveStep(step));
+      dispatch(Object(_errorActions__WEBPACK_IMPORTED_MODULE_1__["clearErrors"])());
+    }, function (err) {
+      return dispatch(Object(_errorActions__WEBPACK_IMPORTED_MODULE_1__["receiveErrors"])(err.responseJSON));
+    });
+  };
+};
+var destroyStep = function destroyStep(todo, step) {
+  return function (dispatch) {
+    return _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_0__["destroyStep"](todo, step).then(function (step) {
+      return dispatch(removeStep(step));
+    });
   };
 };
 
@@ -32375,13 +32408,13 @@ var StepForm = /*#__PURE__*/function (_React$Component) {
       e.preventDefault();
       var title = this.state.title;
       var _this$props = this.props,
-          todoId = _this$props.todoId,
-          receiveStep = _this$props.receiveStep;
-      var stepHash = {
-        todoId: todoId,
+          todo = _this$props.todo,
+          createStep = _this$props.createStep;
+      var step = {
+        todo_id: todo.id,
         title: title
       };
-      receiveStep(stepHash);
+      createStep(todo, step);
       this.resetTitle();
     }
   }, {
@@ -32449,18 +32482,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var StepList = function StepList(props) {
   var steps = props.steps,
-      todoId = props.todoId,
-      receiveStep = props.receiveStep,
-      removeStep = props.removeStep;
+      todo = props.todo,
+      createStep = props.createStep,
+      destroyStep = props.destroyStep;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, steps.map(function (step) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stepListItemContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      todo: todo,
       step: step,
       key: step.id,
-      removeStep: removeStep
+      destroyStep: destroyStep
     });
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stepForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    todoId: todoId,
-    receiveStep: receiveStep
+    todo: todo,
+    createStep: createStep
   }));
 };
 
@@ -32480,32 +32514,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_stepActions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../actions/stepActions */ "./src/actions/stepActions.js");
 /* harmony import */ var _stepList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stepList */ "./src/components/stepList/stepList.jsx");
-/* harmony import */ var _reducers_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../reducers/selectors */ "./src/reducers/selectors.js");
 
 
 
-
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-  var steps = Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_3__["allSteps"])(state);
-  var todoId = ownProps.todoId;
-  return {
-    steps: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_3__["stepsByTodoId"])(steps, todoId)
-  };
-};
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    receiveStep: function receiveStep(step) {
-      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_1__["receiveStep"])(step));
+    createStep: function createStep(todo, step) {
+      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_1__["createStep"])(todo, step));
     },
-    removeStep: function removeStep(step) {
-      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_1__["removeStep"])(step));
+    destroyStep: function destroyStep(todo, step) {
+      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_1__["destroyStep"])(todo, step));
     }
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(mapStateToProps, mapDispatchToProps)(_stepList__WEBPACK_IMPORTED_MODULE_2__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(null, mapDispatchToProps)(_stepList__WEBPACK_IMPORTED_MODULE_2__["default"]));
 
 /***/ }),
 
@@ -32523,15 +32547,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var StepListItem = function StepListItem(props) {
-  var step = props.step,
-      removeStep = props.removeStep;
+  var todo = props.todo,
+      step = props.step,
+      destroyStep = props.destroyStep;
 
   var completeStep = function completeStep() {
-    removeStep(step);
+    destroyStep(todo, step);
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-    key: step.id
+    key: step
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, step.title, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     type: "button",
     onClick: completeStep
@@ -32560,11 +32585,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    receiveStep: function receiveStep(step) {
-      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_2__["receiveStep"])(step));
+    createStep: function createStep(todo, step) {
+      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_2__["createStep"])(todo, step));
     },
-    removeStep: function removeStep(step) {
-      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_2__["removeStep"])(step));
+    destroyStep: function destroyStep(todo, step) {
+      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_2__["destroyStep"])(todo, step));
     }
   };
 };
@@ -32630,12 +32655,25 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(TodoListItem, [{
+    key: "logProps",
+    value: function logProps() {
+      console.log(this.props);
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this$props = this.props,
+          fetchSteps = _this$props.fetchSteps,
+          todo = _this$props.todo;
+      fetchSteps(todo);
+    }
+  }, {
     key: "destroyTodo",
     value: function destroyTodo(e) {
       e.preventDefault();
-      var _this$props = this.props,
-          todo = _this$props.todo,
-          destroyTodo = _this$props.destroyTodo;
+      var _this$props2 = this.props,
+          todo = _this$props2.todo,
+          destroyTodo = _this$props2.destroyTodo;
       destroyTodo(todo);
     }
   }, {
@@ -32683,33 +32721,86 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _stepList_stepListContainer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../stepList/stepListContainer */ "./src/components/stepList/stepListContainer.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 
-var TodoListItemDetailView = function TodoListItemDetailView(props) {
-  var toggleComplete = function toggleComplete(e) {
-    e.preventDefault();
-    var updateTodo = props.updateTodo;
-    var todo = props.todo;
-    todo.isDone = !todo.isDone;
-    todo = {
-      id: todo.id,
-      title: todo.title,
-      body: todo.body,
-      isDone: todo.isDone
-    };
-    updateTodo(todo);
-  };
 
-  var todo = props.todo;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, todo.body), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, todo.isDone ? ' Complete' : ' Incomplete')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    type: "button",
-    onClick: toggleComplete
-  }, todo.isDone ? 'Undo' : 'Done'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "Sub-Tasks")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stepList_stepListContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    todoId: todo.id,
-    key: todo.id
-  }));
-};
+var TodoListItemDetailView = /*#__PURE__*/function (_React$Component) {
+  _inherits(TodoListItemDetailView, _React$Component);
+
+  var _super = _createSuper(TodoListItemDetailView);
+
+  function TodoListItemDetailView(props) {
+    var _this;
+
+    _classCallCheck(this, TodoListItemDetailView);
+
+    _this = _super.call(this, props);
+    _this.toggleComplete = _this.toggleComplete.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(TodoListItemDetailView, [{
+    key: "logProps",
+    value: function logProps() {
+      console.log(this.props);
+    }
+  }, {
+    key: "toggleComplete",
+    value: function toggleComplete(e) {
+      e.preventDefault();
+      var updateTodo = this.props.updateTodo;
+      var todo = this.props.todo;
+      todo = {
+        id: todo.id,
+        title: todo.title,
+        body: todo.body,
+        isDone: !todo.isDone
+      };
+      updateTodo(todo);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          todo = _this$props.todo,
+          steps = _this$props.steps;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        onClick: this.logProps.bind(this)
+      }, todo.body), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, todo.isDone ? ' Complete' : ' Incomplete')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        onClick: this.toggleComplete
+      }, todo.isDone ? 'Undo' : 'Done'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "Sub-Tasks")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stepList_stepListContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        todo: todo,
+        key: todo,
+        steps: steps
+      }));
+    }
+  }]);
+
+  return TodoListItemDetailView;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (TodoListItemDetailView);
 
@@ -32727,7 +32818,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _todoListItemDetailView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoListItemDetailView */ "./src/components/todos/todoItem/todoListItemDetailView.jsx");
 /* harmony import */ var _actions_todoActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../actions/todoActions */ "./src/actions/todoActions.js");
-/* harmony import */ var _reducers_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../reducers/selectors */ "./src/reducers/selectors.js");
+/* harmony import */ var _actions_stepActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../actions/stepActions */ "./src/actions/stepActions.js");
+/* harmony import */ var _reducers_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../reducers/selectors */ "./src/reducers/selectors.js");
+
 
 
 
@@ -32736,7 +32829,7 @@ __webpack_require__.r(__webpack_exports__);
 var mapStateToProps = function mapStateToProps(state, _ref) {
   var todo = _ref.todo;
   return {
-    todo: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_3__["todoById"])(Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_3__["allTodos"])(state), todo.id)[0]
+    steps: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_4__["stepsByTodoId"])(Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_4__["allSteps"])(state), todo.id)
   };
 };
 
@@ -32744,6 +32837,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     updateTodo: function updateTodo(todo) {
       return dispatch(Object(_actions_todoActions__WEBPACK_IMPORTED_MODULE_2__["updateTodo"])(todo));
+    },
+    fetchSteps: function fetchSteps(todo) {
+      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_3__["fetchSteps"])(todo));
     }
   };
 };
@@ -32991,6 +33087,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
       var _this$props = this.props,
           createTodo = _this$props.createTodo,
           destroyTodo = _this$props.destroyTodo,
+          fetchSteps = _this$props.fetchSteps,
           errors = _this$props.errors,
           todos = _this$props.todos;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -33000,7 +33097,8 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoItem_todoListItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
           todo: todo,
           key: todo.id,
-          destroyTodo: destroyTodo
+          destroyTodo: destroyTodo,
+          fetchSteps: fetchSteps
         });
       })));
     }
@@ -33026,7 +33124,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todoList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoList */ "./src/components/todos/todoList/todoList.jsx");
 /* harmony import */ var _actions_todoActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../actions/todoActions */ "./src/actions/todoActions.js");
 /* harmony import */ var _actions_errorActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../actions/errorActions */ "./src/actions/errorActions.js");
-/* harmony import */ var _reducers_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../reducers/selectors */ "./src/reducers/selectors.js");
+/* harmony import */ var _actions_stepActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../actions/stepActions */ "./src/actions/stepActions.js");
+/* harmony import */ var _reducers_selectors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../reducers/selectors */ "./src/reducers/selectors.js");
+
 
 
 
@@ -33035,7 +33135,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    todos: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_4__["allTodos"])(state),
+    todos: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_5__["allTodos"])(state),
     errors: state.errors
   };
 };
@@ -33044,6 +33144,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchTodos: function fetchTodos() {
       return dispatch(Object(_actions_todoActions__WEBPACK_IMPORTED_MODULE_2__["fetchTodos"])());
+    },
+    fetchSteps: function fetchSteps(todo) {
+      return dispatch(Object(_actions_stepActions__WEBPACK_IMPORTED_MODULE_4__["fetchSteps"])(todo));
     },
     createTodo: function createTodo(todo) {
       return dispatch(Object(_actions_todoActions__WEBPACK_IMPORTED_MODULE_2__["createTodo"])(todo));
@@ -33220,9 +33323,7 @@ var allTodos = function allTodos(state) {
   });
 };
 var todoById = function todoById(todos, id) {
-  return todos.filter(function (todo) {
-    return todo.id === id;
-  });
+  return todos[id];
 };
 var allSteps = function allSteps(state) {
   var stepKeys = Object.keys(state.steps);
@@ -33230,9 +33331,9 @@ var allSteps = function allSteps(state) {
     return state.steps[key];
   });
 };
-var stepsByTodoId = function stepsByTodoId(steps, todoId) {
-  return steps.filter(function (_, idx) {
-    return steps[idx].todoId === todoId;
+var stepsByTodoId = function stepsByTodoId(steps, todo_id) {
+  return steps.filter(function (step) {
+    return step.todo_id === todo_id;
   });
 };
 
@@ -33248,6 +33349,18 @@ var stepsByTodoId = function stepsByTodoId(steps, todoId) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_stepActions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/stepActions */ "./src/actions/stepActions.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 var stepReducer = function stepReducer() {
@@ -33255,13 +33368,29 @@ var stepReducer = function stepReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
   Object.freeze(initialState);
   var step = action.step,
+      steps = action.steps,
       type = action.type;
   var newState = Object.assign({}, initialState);
-  var stepItem = Object.assign({}, step);
+  var stepItem;
+  var stepItems;
+
+  if (action.step) {
+    stepItem = Object.assign({}, step);
+  }
+
+  if (action.steps) {
+    stepItems = _toConsumableArray(steps);
+  }
 
   switch (type) {
     case _actions_stepActions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_STEP"]:
       newState[stepItem.id] = stepItem;
+      return newState;
+
+    case _actions_stepActions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_STEPS"]:
+      stepItems.forEach(function (step) {
+        newState[step.id] = step;
+      });
       return newState;
 
     case _actions_stepActions__WEBPACK_IMPORTED_MODULE_0__["REMOVE_STEP"]:
@@ -33369,6 +33498,42 @@ var configureStore = function configureStore() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (configureStore);
+
+/***/ }),
+
+/***/ "./src/util/stepAPIUtil.js":
+/*!*********************************!*\
+  !*** ./src/util/stepAPIUtil.js ***!
+  \*********************************/
+/*! exports provided: fetchSteps, createStep, destroyStep */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchSteps", function() { return fetchSteps; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createStep", function() { return createStep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyStep", function() { return destroyStep; });
+var fetchSteps = function fetchSteps(todo) {
+  return $.ajax({
+    method: 'GET',
+    url: "api/todos/".concat(todo.id, "/steps")
+  });
+};
+var createStep = function createStep(todo, step) {
+  return $.ajax({
+    method: 'POST',
+    url: "api/todos/".concat(todo.id, "/steps"),
+    data: {
+      step: step
+    }
+  });
+};
+var destroyStep = function destroyStep(todo, step) {
+  return $.ajax({
+    method: 'DELETE',
+    url: "api/todos/".concat(todo.id, "/steps/").concat(step.id)
+  });
+};
 
 /***/ }),
 
