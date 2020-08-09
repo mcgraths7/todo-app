@@ -1,0 +1,5 @@
+Todo.create(title: 'wash car', body: 'with soap', isDone: false)
+Todo.create(title: 'wash dog', body: 'with shampoo', isDone: false)
+Todo.create(title: 'wash hair', body: 'don\'t forget to condition', isDone: false)
+Todo.create(title: 'brush teeth', body: 'with toothpaste', isDone: false)
+Todo.create(title: 'cook dinner', body: 'meat is on the menu bois', isDone: false)
