@@ -4,9 +4,7 @@ export const allTodos = (state) => {
 };
 
 export const todoById = (todos, id) => (
-  todos.filter((todo) => (
-    todo.id === id
-  ))
+  todos[id]
 );
 
 export const allSteps = (state) => {
@@ -14,8 +12,6 @@ export const allSteps = (state) => {
   return stepKeys.map((key) => state.steps[key]);
 };
 
-export const stepsByTodoId = (steps, todoId) => (
-  steps.filter((_, idx) => (
-    steps[idx].todoId === todoId
-  ))
+export const stepsByTodoId = (steps, todo_id) => (
+  steps.filter((step) => step.todo_id === todo_id)
 );

@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 class StepForm extends React.Component {
   constructor(props) {
     super(props);
@@ -16,12 +15,12 @@ class StepForm extends React.Component {
   addStep(e) {
     e.preventDefault();
     const { title } = this.state;
-    const { todoId, receiveStep } = this.props;
-    const stepHash = {
-      todoId,
+    const { todo, createStep } = this.props;
+    const step = {
+      todo_id: todo.id,
       title,
     };
-    receiveStep(stepHash);
+    createStep(todo, step);
     this.resetTitle();
   }
 

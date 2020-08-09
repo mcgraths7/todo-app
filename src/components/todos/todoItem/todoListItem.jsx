@@ -12,6 +12,15 @@ class TodoListItem extends React.Component {
     this.toggleDetail = this.toggleDetail.bind(this);
   }
 
+  logProps() {
+    console.log(this.props);
+  }
+
+  componentDidMount() {
+    const { fetchSteps, todo } = this.props;
+    fetchSteps(todo);
+  }
+
   destroyTodo(e) {
     e.preventDefault();
     const { todo, destroyTodo } = this.props;

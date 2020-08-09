@@ -13,6 +13,7 @@ class TodoList extends React.Component {
     const {
       createTodo,
       destroyTodo,
+      fetchSteps,
       errors,
       todos,
     } = this.props;
@@ -29,6 +30,7 @@ class TodoList extends React.Component {
                 todo={todo}
                 key={todo.id}
                 destroyTodo={destroyTodo}
+                fetchSteps={fetchSteps}
               />
             ))
           }

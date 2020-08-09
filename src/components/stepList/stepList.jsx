@@ -6,22 +6,23 @@ import StepForm from './stepForm';
 const StepList = (props) => {
   const {
     steps,
-    todoId,
-    receiveStep,
-    removeStep,
+    todo,
+    createStep,
+    destroyStep,
   } = props;
   return (
     <div>
       <ul>
         {steps.map((step) => (
           <StepListItemContainer
+            todo={todo}
             step={step}
             key={step.id}
-            removeStep={removeStep}
+            destroyStep={destroyStep}
           />
         ))}
       </ul>
-      <StepForm todoId={todoId} receiveStep={receiveStep} />
+      <StepForm todo={todo} createStep={createStep} />
     </div>
   );
 };
