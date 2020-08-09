@@ -2453,3 +2453,103 @@ Unpermitted parameter: :format
 Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.9ms)
 
 
+Started PATCH "/api/todos/1" for ::1 at 2020-08-09 10:24:42 -0400
+Processing by Api::TodosController#update as JSON
+  Parameters: {"id"=>"1", "title"=>"wash car", "body"=>"with soap", "isDone"=>"true"}
+  [1m[36mTodo Load (0.4ms)[0m  [1m[34mSELECT  "todos".* FROM "todos" WHERE "todos"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/todos_controller.rb:48
+Unpermitted parameter: :format
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/todos_controller.rb:26
+  [1m[36mTodo Update (0.8ms)[0m  [1m[33mUPDATE "todos" SET "isDone" = $1 WHERE "todos"."id" = $2[0m  [["isDone", true], ["id", 1]]
+  ↳ app/controllers/api/todos_controller.rb:26
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/todos_controller.rb:26
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.8ms)
+
+
+Started PATCH "/api/todos/1" for ::1 at 2020-08-09 10:24:42 -0400
+Processing by Api::TodosController#update as JSON
+  Parameters: {"id"=>"1", "title"=>"wash car", "body"=>"with soap", "isDone"=>"false"}
+  [1m[36mTodo Load (0.5ms)[0m  [1m[34mSELECT  "todos".* FROM "todos" WHERE "todos"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/todos_controller.rb:48
+Unpermitted parameter: :format
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/todos_controller.rb:26
+  [1m[36mTodo Update (1.1ms)[0m  [1m[33mUPDATE "todos" SET "isDone" = $1 WHERE "todos"."id" = $2[0m  [["isDone", false], ["id", 1]]
+  ↳ app/controllers/api/todos_controller.rb:26
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/todos_controller.rb:26
+Completed 200 OK in 7ms (Views: 0.3ms | ActiveRecord: 2.8ms)
+
+
+Started GET "/" for ::1 at 2020-08-09 10:26:52 -0400
+Processing by StaticPagesController#root as HTML
+  Rendering static_pages/root.html.erb within layouts/application
+  Rendered static_pages/root.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 370ms (Views: 369.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/todos" for ::1 at 2020-08-09 10:26:52 -0400
+Processing by Api::TodosController#index as JSON
+  [1m[36mTodo Load (0.5ms)[0m  [1m[34mSELECT "todos".* FROM "todos"[0m
+  ↳ app/controllers/api/todos_controller.rb:3
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.5ms)
+
+
+Started DELETE "/api/todos/9" for ::1 at 2020-08-09 10:26:55 -0400
+Processing by Api::TodosController#destroy as JSON
+  Parameters: {"id"=>"9", "title"=>"test", "body"=>"test", "isDone"=>"false"}
+  [1m[36mTodo Load (0.5ms)[0m  [1m[34mSELECT  "todos".* FROM "todos" WHERE "todos"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/todos_controller.rb:48
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/todos_controller.rb:35
+  [1m[36mTodo Destroy (0.3ms)[0m  [1m[31mDELETE FROM "todos" WHERE "todos"."id" = $1[0m  [["id", 9]]
+  ↳ app/controllers/api/todos_controller.rb:35
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/todos_controller.rb:35
+Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 1.7ms)
+
+
+Started DELETE "/api/todos/8" for ::1 at 2020-08-09 10:26:57 -0400
+Processing by Api::TodosController#destroy as JSON
+  Parameters: {"id"=>"8", "title"=>"clear", "body"=>"error", "isDone"=>"false"}
+  [1m[36mTodo Load (0.9ms)[0m  [1m[34mSELECT  "todos".* FROM "todos" WHERE "todos"."id" = $1 LIMIT $2[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/controllers/api/todos_controller.rb:48
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/todos_controller.rb:35
+  [1m[36mTodo Destroy (0.6ms)[0m  [1m[31mDELETE FROM "todos" WHERE "todos"."id" = $1[0m  [["id", 8]]
+  ↳ app/controllers/api/todos_controller.rb:35
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/todos_controller.rb:35
+Completed 200 OK in 5ms (Views: 0.3ms | ActiveRecord: 2.4ms)
+
+
+Started GET "/" for ::1 at 2020-08-09 10:27:26 -0400
+Processing by StaticPagesController#root as HTML
+  Rendering static_pages/root.html.erb within layouts/application
+  Rendered static_pages/root.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 280ms (Views: 280.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/api/todos" for ::1 at 2020-08-09 10:27:27 -0400
+Processing by Api::TodosController#index as JSON
+  [1m[36mTodo Load (0.4ms)[0m  [1m[34mSELECT "todos".* FROM "todos"[0m
+  ↳ app/controllers/api/todos_controller.rb:3
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.4ms)
+
+
+Started DELETE "/api/todos/5" for ::1 at 2020-08-09 10:27:32 -0400
+Processing by Api::TodosController#destroy as JSON
+  Parameters: {"id"=>"5", "title"=>"cook dinner", "body"=>"meat is on the menu bois", "isDone"=>"false"}
+  [1m[36mTodo Load (0.3ms)[0m  [1m[34mSELECT  "todos".* FROM "todos" WHERE "todos"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/todos_controller.rb:48
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/todos_controller.rb:35
+  [1m[36mTodo Destroy (0.8ms)[0m  [1m[31mDELETE FROM "todos" WHERE "todos"."id" = $1[0m  [["id", 5]]
+  ↳ app/controllers/api/todos_controller.rb:35
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/todos_controller.rb:35
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.8ms)
+
+

@@ -12,7 +12,6 @@ class TodoList extends React.Component {
   render() {
     const {
       createTodo,
-      toggleTodo,
       destroyTodo,
       errors,
       todos,
@@ -29,6 +28,7 @@ class TodoList extends React.Component {
               <TodoListItem
                 todo={todo}
                 key={todo.id}
+                destroyTodo={destroyTodo}
               />
             ))
           }

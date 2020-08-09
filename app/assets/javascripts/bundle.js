@@ -32990,7 +32990,6 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this$props = this.props,
           createTodo = _this$props.createTodo,
-          toggleTodo = _this$props.toggleTodo,
           destroyTodo = _this$props.destroyTodo,
           errors = _this$props.errors,
           todos = _this$props.todos;
@@ -33000,7 +32999,8 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, todos.map(function (todo) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoItem_todoListItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
           todo: todo,
-          key: todo.id
+          key: todo.id,
+          destroyTodo: destroyTodo
         });
       })));
     }
