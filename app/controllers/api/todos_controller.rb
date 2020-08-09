@@ -8,7 +8,7 @@ class Api::TodosController < ApplicationController
     if @todo.save
       render json: @todo
     else
-      render json: @todo.errors.full_messages, status: :unprocessable_entity
+      render json: @todo.errors.full_messages, status: :bad_request
     end
   end
 
@@ -41,7 +41,7 @@ class Api::TodosController < ApplicationController
 
   private
   def todo_params
-    params.require(:todo).permit(:title, :body, :isDone)
+    params.permit(:id, :title, :body, :isDone)
   end
 
   def set_todo

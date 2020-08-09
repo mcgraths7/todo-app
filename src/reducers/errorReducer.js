@@ -1,10 +1,20 @@
-import { RECEIVE_ERRORS, CLEAR_ERRORS } from '../actions/errorActions';
+import {
+  RECEIVE_ERROR,
+  RECEIVE_ERRORS,
+  CLEAR_ERRORS,
+} from '../actions/errorActions';
 
-const errorReducer = (initialState = {}, action) => {
+const errorReducer = (initialState = [], action) => {
   Object.freeze(initialState);
-  switch (action.type) {
+  const { error, errors, type } = action;
+  const newState = [...initialState];
+  switch (type) {
+    case RECEIVE_ERROR:
+      newState.push(error);
+      return newState;
     case RECEIVE_ERRORS:
-      return [...action.errors];
+      newState.push(errors);
+      return newState.flat();
     case CLEAR_ERRORS:
       return [];
     default:

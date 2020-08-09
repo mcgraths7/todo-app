@@ -34,11 +34,22 @@ export const fetchTodos = () => (dispatch) => (
 
 export const createTodo = (todo) => (dispatch) => (
   TodoAPIUtil.createTodo(todo)
-    .then((todo) => { dispatch(receiveTodo(todo)); dispatch(clearErrors()) },
-      (err) => dispatch(receiveErrors(err.responseJSON)))
+    .then((todo) => {
+      dispatch(receiveTodo(todo));
+      dispatch(clearErrors());
+    },
+    (err) => dispatch(receiveErrors(err.responseJSON)))
 );
-
 
 export const destroyTodo = (todo) => (dispatch) => (
   TodoAPIUtil.destroyTodo(todo).then((todo) => dispatch(removeTodo(todo)))
+);
+
+export const updateTodo = (todo) => (dispatch) => (
+  TodoAPIUtil.updateTodo(todo)
+    .then((todo) => {
+      dispatch(receiveTodo(todo));
+      dispatch(clearErrors());
+    },
+    (err) => dispatch(receiveErrors(err.responseJSON)))
 );

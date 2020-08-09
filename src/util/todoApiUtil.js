@@ -20,3 +20,11 @@ export const destroyTodo = (todo) => (
     data: todo,
   })
 );
+
+export const updateTodo = (todo) => (
+  $.ajax({
+    method: 'PATCH',
+    url: `/api/todos/${todo.id}`,
+    data: todo,
+  })
+);

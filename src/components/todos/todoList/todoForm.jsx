@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ErrorsList from './errorsList';
+
 class TodoForm extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +44,7 @@ class TodoForm extends React.Component {
       body,
       isDone: false,
     };
-    createTodo({ todo }).then(() => (
+    createTodo(todo).then(() => (
       this.resetState()
     ));
   }
@@ -55,8 +57,10 @@ class TodoForm extends React.Component {
 
   render() {
     const { title, body } = this.state;
+    const { errors } = this.props;
     return (
       <form>
+        <ErrorsList errors={errors} />
         <label htmlFor="todoTitle">
           Title
           <input type="text" name="todoTitle" onChange={this.updateTitle} onKeyDown={this.addTodoOnReturn} value={title} />

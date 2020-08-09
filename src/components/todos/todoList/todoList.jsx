@@ -14,19 +14,21 @@ class TodoList extends React.Component {
       createTodo,
       toggleTodo,
       destroyTodo,
+      errors,
       todos,
     } = this.props;
     return (
       <div>
-        <TodoForm createTodo={createTodo} />
+        <TodoForm
+          createTodo={createTodo}
+          errors={errors}
+        />
         <ul>
           {
             todos.map((todo) => (
               <TodoListItem
                 todo={todo}
                 key={todo.id}
-                destroyTodo={destroyTodo}
-                toggleTodo={toggleTodo}
               />
             ))
           }

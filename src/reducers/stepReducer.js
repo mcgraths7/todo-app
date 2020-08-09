@@ -5,11 +5,12 @@ import {
 
 const stepReducer = (initialState = {}, action) => {
   Object.freeze(initialState);
-  const newState = { ...initialState };
+  const { step, type } = action;
+  const newState = Object.assign({}, initialState);
 
-  const stepItem = action.step;
+  const stepItem = Object.assign({}, step);
 
-  switch (action.type) {
+  switch (type) {
     case RECEIVE_STEP:
       newState[stepItem.id] = stepItem;
       return newState;

@@ -6,17 +6,17 @@ import {
 
 const todoReducer = (previousState = {}, action) => {
   Object.freeze(previousState);
-  const newState = { ...previousState };
+  const newState = Object.assign({}, previousState);
+  const { todo, todos, type } = action;
   let todoItem;
   let todoItems;
-  if (action.todo) {
-    todoItem = { ...action.todo };
+  if (todo) {
+    todoItem = Object.assign({}, action.todo);
   }
-  if (action.todos) {
+  if (todos) {
     todoItems = [...action.todos];
   }
-
-  switch (action.type) {
+  switch (type) {
     case RECEIVE_TODO:
       newState[todoItem.id] = todoItem;
       return newState;

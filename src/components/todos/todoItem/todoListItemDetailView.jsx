@@ -5,9 +5,16 @@ import StepListContainer from '../../stepList/stepListContainer';
 const TodoListItemDetailView = (props) => {
   const toggleComplete = (e) => {
     e.preventDefault();
-    const { receiveTodo, todo } = props;
+    const { updateTodo } = props;
+    let { todo } = props;
     todo.isDone = !todo.isDone;
-    receiveTodo(todo);
+    todo = {
+      id: todo.id,
+      title: todo.title,
+      body: todo.body,
+      isDone: todo.isDone,
+    };
+    updateTodo(todo);
   };
 
   const { todo } = props;
