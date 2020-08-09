@@ -16,7 +16,7 @@ export const createTodo = (todo) => (
 export const destroyTodo = (todo) => (
   $.ajax({
     method: 'DELETE',
-    url: `/api/todo/:${todo.id}`,
+    url: `/api/todos/${todo.id}`,
     data: todo,
   })
 );

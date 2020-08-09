@@ -32224,20 +32224,19 @@ var fetchTodos = function fetchTodos() {
 };
 var createTodo = function createTodo(todo) {
   return function (dispatch) {
-    return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_0__["createTodo"](todo).then((function (receivedTodo) {
-      return dispatch(receiveTodo(receivedTodo));
+    return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_0__["createTodo"](todo).then(function (todo) {
+      dispatch(receiveTodo(todo));
+      dispatch(Object(_errorActions__WEBPACK_IMPORTED_MODULE_1__["clearErrors"])());
     }, function (err) {
       return dispatch(Object(_errorActions__WEBPACK_IMPORTED_MODULE_1__["receiveErrors"])(err.responseJSON));
-    }));
+    });
   };
 };
 var destroyTodo = function destroyTodo(todo) {
   return function (dispatch) {
-    return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_0__["destroyTodo"](todo).then((function (destroyedTodo) {
-      return dispatch(removeTodo(destroyedTodo));
-    }, function (err) {
-      return dispatch(Object(_errorActions__WEBPACK_IMPORTED_MODULE_1__["receiveErrors"])(err.responseJSON));
-    }));
+    return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_0__["destroyTodo"](todo).then(function (todo) {
+      return dispatch(removeTodo(todo));
+    });
   };
 };
 
@@ -32631,7 +32630,6 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      debugger;
       var todo = this.props.todo;
       var detail = this.state.detail;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, todo.title), detail ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItemDetailViewContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -32832,9 +32830,7 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
       createTodo({
         todo: todo
       }).then(function () {
-        return _this2.resetState()["catch"](function (error) {
-          console.log("hello");
-        });
+        return _this2.resetState();
       });
     }
   }, {
@@ -32941,8 +32937,8 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this$props = this.props,
           createTodo = _this$props.createTodo,
-          removeTodo = _this$props.removeTodo,
           toggleTodo = _this$props.toggleTodo,
+          destroyTodo = _this$props.destroyTodo,
           todos = _this$props.todos;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
         createTodo: createTodo
@@ -32950,7 +32946,7 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoItem_todoListItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
           todo: todo,
           key: todo.id,
-          removeTodo: removeTodo,
+          destroyTodo: destroyTodo,
           toggleTodo: toggleTodo
         });
       })));
@@ -33236,7 +33232,7 @@ var todoReducer = function todoReducer() {
   switch (action.type) {
     case _actions_todoActions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_TODO"]:
       newState[todoItem.id] = todoItem;
-      return _objectSpread({}, newState);
+      return newState;
 
     case _actions_todoActions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_TODOS"]:
       todoItems.forEach(function (todo) {
@@ -33246,7 +33242,7 @@ var todoReducer = function todoReducer() {
 
     case _actions_todoActions__WEBPACK_IMPORTED_MODULE_0__["REMOVE_TODO"]:
       delete newState[todoItem.id];
-      return _objectSpread({}, newState);
+      return newState;
 
     default:
       return previousState;
@@ -33313,7 +33309,7 @@ var createTodo = function createTodo(todo) {
 var destroyTodo = function destroyTodo(todo) {
   return $.ajax({
     method: 'DELETE',
-    url: "/api/todo/:".concat(todo.id),
+    url: "/api/todos/".concat(todo.id),
     data: todo
   });
 };

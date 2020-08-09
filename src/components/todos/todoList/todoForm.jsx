@@ -44,9 +44,7 @@ class TodoForm extends React.Component {
     };
     createTodo({ todo }).then(() => (
       this.resetState()
-    ).catch((error) => {
-      console.log("hello");
-    }));
+    ));
   }
 
   addTodoOnReturn(e) {

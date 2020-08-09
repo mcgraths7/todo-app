@@ -19,7 +19,7 @@ const todoReducer = (previousState = {}, action) => {
   switch (action.type) {
     case RECEIVE_TODO:
       newState[todoItem.id] = todoItem;
-      return { ...newState };
+      return newState;
     case RECEIVE_TODOS:
       todoItems.forEach((todo) => {
         newState[todo.id] = todo;
@@ -27,7 +27,7 @@ const todoReducer = (previousState = {}, action) => {
       return newState;
     case REMOVE_TODO:
       delete newState[todoItem.id];
-      return { ...newState };
+      return newState;
     default:
       return previousState;
   }

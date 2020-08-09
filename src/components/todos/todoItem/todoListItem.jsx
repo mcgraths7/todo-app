@@ -27,7 +27,6 @@ class TodoListItem extends React.Component {
   }
 
   render() {
-    debugger;
     const { todo } = this.props;
     const { detail } = this.state;
     return (
