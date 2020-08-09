@@ -8,10 +8,6 @@ class TodoListItemDetailView extends React.Component {
     this.toggleComplete = this.toggleComplete.bind(this);
   }
 
-  logProps() {
-    console.log(this.props);
-  }
-
   toggleComplete(e) {
     e.preventDefault();
     const { updateTodo } = this.props;
@@ -29,7 +25,7 @@ class TodoListItemDetailView extends React.Component {
     const { todo, steps } = this.props;
     return (
       <div>
-        <p onClick={this.logProps.bind(this)}>{todo.body}</p>
+        <p>{todo.body}</p>
         <p>
           <small>{todo.isDone ? ' Complete' : ' Incomplete'}</small>
         </p>

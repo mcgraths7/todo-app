@@ -32655,11 +32655,6 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(TodoListItem, [{
-    key: "logProps",
-    value: function logProps() {
-      console.log(this.props);
-    }
-  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this$props = this.props,
@@ -32762,11 +32757,6 @@ var TodoListItemDetailView = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(TodoListItemDetailView, [{
-    key: "logProps",
-    value: function logProps() {
-      console.log(this.props);
-    }
-  }, {
     key: "toggleComplete",
     value: function toggleComplete(e) {
       e.preventDefault();
@@ -32786,9 +32776,7 @@ var TodoListItemDetailView = /*#__PURE__*/function (_React$Component) {
       var _this$props = this.props,
           todo = _this$props.todo,
           steps = _this$props.steps;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-        onClick: this.logProps.bind(this)
-      }, todo.body), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, todo.isDone ? ' Complete' : ' Incomplete')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, todo.body), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, todo.isDone ? ' Complete' : ' Incomplete')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: this.toggleComplete
       }, todo.isDone ? 'Undo' : 'Done'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "Sub-Tasks")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stepList_stepListContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
