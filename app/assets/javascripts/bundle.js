@@ -32405,6 +32405,8 @@ var StepForm = /*#__PURE__*/function (_React$Component) {
   _createClass(StepForm, [{
     key: "addStep",
     value: function addStep(e) {
+      var _this2 = this;
+
       e.preventDefault();
       var title = this.state.title;
       var _this$props = this.props,
@@ -32414,8 +32416,9 @@ var StepForm = /*#__PURE__*/function (_React$Component) {
         todo_id: todo.id,
         title: title
       };
-      createStep(todo, step);
-      this.resetTitle();
+      createStep(todo, step).then(function () {
+        _this2.resetTitle();
+      });
     }
   }, {
     key: "addStepOnReturn",
@@ -32685,7 +32688,10 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var todo = this.props.todo;
       var detail = this.state.detail;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, todo.title), detail ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItemDetailViewContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      var tagNames = todo.tags.map(function (tag) {
+        return tag.name;
+      });
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, todo.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, tagNames.join(' | ')), detail ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItemDetailViewContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
         todo: todo
       }) : '', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
@@ -32866,6 +32872,28 @@ var ErrorsList = function ErrorsList(_ref) {
 
 /***/ }),
 
+/***/ "./src/components/todos/todoList/tagList.jsx":
+/*!***************************************************!*\
+  !*** ./src/components/todos/todoList/tagList.jsx ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var TagList = function TagList(props) {
+  var tagNames = props.tagNames;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Tags"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, tagNames.join(' | ')));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (TagList);
+
+/***/ }),
+
 /***/ "./src/components/todos/todoList/todoForm.jsx":
 /*!****************************************************!*\
   !*** ./src/components/todos/todoList/todoForm.jsx ***!
@@ -32878,7 +32906,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _errorsList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./errorsList */ "./src/components/todos/todoList/errorsList.jsx");
+/* harmony import */ var _tagList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tagList */ "./src/components/todos/todoList/tagList.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32903,6 +32944,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var TodoForm = /*#__PURE__*/function (_React$Component) {
   _inherits(TodoForm, _React$Component);
 
@@ -32916,22 +32958,36 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       title: '',
-      body: ''
+      body: '',
+      tagName: '',
+      tagNames: []
     };
     _this.updateTitle = _this.updateTitle.bind(_assertThisInitialized(_this));
     _this.updateBody = _this.updateBody.bind(_assertThisInitialized(_this));
     _this.addTodo = _this.addTodo.bind(_assertThisInitialized(_this));
-    _this.resetState = _this.resetState.bind(_assertThisInitialized(_this));
+    _this.resetTodoDetails = _this.resetTodoDetails.bind(_assertThisInitialized(_this));
     _this.addTodoOnReturn = _this.addTodoOnReturn.bind(_assertThisInitialized(_this));
+    _this.updateTagName = _this.updateTagName.bind(_assertThisInitialized(_this));
+    _this.addTag = _this.addTag.bind(_assertThisInitialized(_this));
+    _this.addTagOnReturn = _this.addTagOnReturn.bind(_assertThisInitialized(_this));
+    _this.resetTagName = _this.resetTagName.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(TodoForm, [{
-    key: "resetState",
-    value: function resetState() {
+    key: "resetTodoDetails",
+    value: function resetTodoDetails() {
       this.setState({
         title: '',
-        body: ''
+        body: '',
+        tagNames: []
+      });
+    }
+  }, {
+    key: "resetTagName",
+    value: function resetTagName() {
+      this.setState({
+        tagName: ''
       });
     }
   }, {
@@ -32949,22 +33005,46 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "updateTagName",
+    value: function updateTagName(e) {
+      this.setState({
+        tagName: e.currentTarget.value
+      });
+    }
+  }, {
+    key: "addTag",
+    value: function addTag(e) {
+      e.preventDefault();
+      var _this$state = this.state,
+          tagName = _this$state.tagName,
+          tagNames = _this$state.tagNames;
+      this.setState(function () {
+        var newState = {
+          tagNames: [].concat(_toConsumableArray(tagNames), [tagName])
+        };
+        return newState;
+      });
+      this.resetTagName();
+    }
+  }, {
     key: "addTodo",
     value: function addTodo(e) {
       var _this2 = this;
 
-      var _this$state = this.state,
-          title = _this$state.title,
-          body = _this$state.body;
-      var createTodo = this.props.createTodo;
       e.preventDefault();
+      var _this$state2 = this.state,
+          title = _this$state2.title,
+          body = _this$state2.body,
+          tagNames = _this$state2.tagNames;
+      var createTodo = this.props.createTodo;
       var todo = {
         title: title,
         body: body,
-        isDone: false
+        isDone: false,
+        tag_names: tagNames
       };
       createTodo(todo).then(function () {
-        return _this2.resetState();
+        return _this2.resetTodoDetails();
       });
     }
   }, {
@@ -32975,13 +33055,22 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
       }
     }
   }, {
+    key: "addTagOnReturn",
+    value: function addTagOnReturn(e) {
+      if (e.keyCode === 13) {
+        this.addTag();
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this$state2 = this.state,
-          title = _this$state2.title,
-          body = _this$state2.body;
+      var _this$state3 = this.state,
+          title = _this$state3.title,
+          body = _this$state3.body,
+          tagName = _this$state3.tagName,
+          tagNames = _this$state3.tagNames;
       var errors = this.props.errors;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_errorsList__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_errorsList__WEBPACK_IMPORTED_MODULE_1__["default"], {
         errors: errors
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "todoTitle"
@@ -32999,10 +33088,12 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
         onChange: this.updateBody,
         onKeyDown: this.addTodoOnReturn,
         value: body
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tagList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        tagNames: tagNames
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: this.addTodo
-      }, "Add Todo!"));
+      }, "Add Todo!")));
     }
   }]);
 
@@ -33512,6 +33603,7 @@ var createStep = function createStep(todo, step) {
     method: 'POST',
     url: "api/todos/".concat(todo.id, "/steps"),
     data: {
+      todo: todo,
       step: step
     }
   });
@@ -33548,21 +33640,27 @@ var createTodo = function createTodo(todo) {
   return $.ajax({
     method: 'POST',
     url: '/api/todos',
-    data: todo
+    data: {
+      todo: todo
+    }
   });
 };
 var destroyTodo = function destroyTodo(todo) {
   return $.ajax({
     method: 'DELETE',
     url: "/api/todos/".concat(todo.id),
-    data: todo
+    data: {
+      todo: todo
+    }
   });
 };
 var updateTodo = function updateTodo(todo) {
   return $.ajax({
     method: 'PATCH',
     url: "/api/todos/".concat(todo.id),
-    data: todo
+    data: {
+      todo: todo
+    }
   });
 };
 
