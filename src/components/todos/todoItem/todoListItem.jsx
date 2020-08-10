@@ -34,9 +34,11 @@ class TodoListItem extends React.Component {
   render() {
     const { todo } = this.props;
     const { detail } = this.state;
+    const tagNames = todo.tags.map((tag) => tag.name);
     return (
       <li>
         <h3>{todo.title}</h3>
+        <small>{tagNames.join(' | ')}</small>
         {detail ? <TodoListItemDetailViewContainer todo={todo} /> : ''}
         <p>
           <span>

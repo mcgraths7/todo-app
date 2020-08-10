@@ -1,17 +1,12 @@
 import React from 'react';
 
-import Tag from './tag';
-
 const TagList = (props) => {
   const { tagNames } = props;
-  const tagItems = tagNames.map((tagName) => <Tag tagName={tagName} />);
 
   return (
     <div>
-      <h4>Tag List</h4>
-      <ul>
-        {tagItems}
-      </ul>
+      <h4>Tags</h4>
+      <small>{tagNames.join(' | ')}</small>
     </div>
   );
 };

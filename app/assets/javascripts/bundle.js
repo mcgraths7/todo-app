@@ -32688,7 +32688,10 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var todo = this.props.todo;
       var detail = this.state.detail;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, todo.title), detail ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItemDetailViewContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      var tagNames = todo.tags.map(function (tag) {
+        return tag.name;
+      });
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, todo.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, tagNames.join(' | ')), detail ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItemDetailViewContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
         todo: todo
       }) : '', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
@@ -32869,30 +32872,6 @@ var ErrorsList = function ErrorsList(_ref) {
 
 /***/ }),
 
-/***/ "./src/components/todos/todoList/tag.jsx":
-/*!***********************************************!*\
-  !*** ./src/components/todos/todoList/tag.jsx ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var Tag = function Tag(props) {
-  var tagName = props.tagName;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-    key: tagName
-  }, tagName);
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Tag);
-
-/***/ }),
-
 /***/ "./src/components/todos/todoList/tagList.jsx":
 /*!***************************************************!*\
   !*** ./src/components/todos/todoList/tagList.jsx ***!
@@ -32904,18 +32883,11 @@ var Tag = function Tag(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _tag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tag */ "./src/components/todos/todoList/tag.jsx");
-
 
 
 var TagList = function TagList(props) {
   var tagNames = props.tagNames;
-  var tagItems = tagNames.map(function (tagName) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tag__WEBPACK_IMPORTED_MODULE_1__["default"], {
-      tagName: tagName
-    });
-  });
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Tag List"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, tagItems));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Tags"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, tagNames.join(' | ')));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (TagList);
@@ -33116,23 +33088,12 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
         onChange: this.updateBody,
         onKeyDown: this.addTodoOnReturn,
         value: body
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-        htmlFor: "todoTags"
-      }, "Add Tags", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "text",
-        name: "todoTags",
-        onChange: this.updateTagName,
-        onKeyDown: this.addTagOnReturn,
-        value: tagName
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tagList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        tagNames: tagNames
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
-        onClick: this.addTag
-      }, "Add Tag!")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: "button",
         onClick: this.addTodo
-      }, "Add Todo!")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tagList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        tagNames: tagNames
-      }));
+      }, "Add Todo!")));
     }
   }]);
 
