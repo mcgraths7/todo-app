@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: todos
+#
+#  id      :bigint           not null, primary key
+#  title   :string
+#  body    :string
+#  isDone  :boolean          default(FALSE)
+#  user_id :integer
+#
 class Todo < ApplicationRecord
   validates :title, :body, presence: true
   validate :boolean_field_exists
@@ -7,6 +17,7 @@ class Todo < ApplicationRecord
   has_many :tags,
            through: :taggings,
            source: :tag
+  belongs_to :user
   
   def tag_names=(tag_name_arr)
     self.tags = tag_name_arr.map do |tag_name|

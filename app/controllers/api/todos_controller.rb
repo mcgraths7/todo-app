@@ -1,4 +1,6 @@
 class Api::TodosController < ApplicationController
+  before_action :deny_access_if_not_logged_in, only: [:create, :update, :destroy]
+  before_action :redirect_if_not_logged_in
   def index
     @todos = Todo.all
     if @todos
@@ -18,14 +20,14 @@ class Api::TodosController < ApplicationController
     end
   end
 
-  def show
-    @todo = set_todo
-    if @todo
-      render json: @todo, include: :tags
-    else
-      render json: @todo.errors.full_messages, status: :not_found
-    end
-  end
+  # def show
+  #   @todo = set_todo
+  #   if @todo
+  #     render json: @todo, include: :tags
+  #   else
+  #     render json: @todo.errors.full_messages, status: :not_found
+  #   end
+  # end
 
   def update
     @todo = set_todo

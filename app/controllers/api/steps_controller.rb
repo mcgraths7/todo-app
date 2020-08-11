@@ -1,4 +1,5 @@
 class Api::StepsController < ApplicationController
+  before_action :deny_access_if_not_logged_in
   def index
     @steps = Step.where(todo_id: params[:todo_id])
     if @steps

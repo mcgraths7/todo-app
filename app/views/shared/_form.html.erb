@@ -1,0 +1,16 @@
+<% message = url.split('/').include?('signup') ? 'Sign Up!' : 'Log In!' %>
+
+<%= form_for :user, method: 'post', url: url  do |f| %>
+  <%= f.label :username %>
+  <%= f.text_field :username %>
+
+  <%= f.label :password %>
+  <%= f.password_field :password %>
+  <% if request.fullpath === '/signup' %>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+    <%= f.submit "Sign up!" %>
+  <% else %>
+    <%= f.submit "Log In"  %>
+  <% end %>
+<% end %>
