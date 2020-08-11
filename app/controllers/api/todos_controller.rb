@@ -1,15 +1,16 @@
 class Api::TodosController < ApplicationController
   before_action :deny_access_if_not_logged_in, only: [:create, :update, :destroy]
   before_action :redirect_if_not_logged_in
+
   def index
-    @todos = Todo.all
+    @todos = Todo.where(user_id: current_user.id)
     if @todos
       render json: @todos, status: :ok, include: :tags
     end
   end
 
   def create
-    @todo = Todo.new(title: todo_params[:title], body: todo_params[:body], isDone: todo_params[:isDone])
+    @todo = current_user.todos.new(title: todo_params[:title], body: todo_params[:body], isDone: todo_params[:isDone])
     unless todo_params[:tag_names].nil?
       @todo.tag_names = todo_params[:tag_names]
     end
@@ -19,15 +20,6 @@ class Api::TodosController < ApplicationController
       render json: @todo.errors.full_messages, status: :bad_request
     end
   end
-
-  # def show
-  #   @todo = set_todo
-  #   if @todo
-  #     render json: @todo, include: :tags
-  #   else
-  #     render json: @todo.errors.full_messages, status: :not_found
-  #   end
-  # end
 
   def update
     @todo = set_todo
@@ -53,6 +45,7 @@ class Api::TodosController < ApplicationController
   end
 
   def set_todo
-    Todo.find(params[:id])
+    current_user.todos.find(params[:id])
   end
+
 end
