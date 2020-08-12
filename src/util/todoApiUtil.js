@@ -13,17 +13,24 @@ export const createTodo = (todo) => (
   })
 );
 
-export const destroyTodo = (todo) => (
+export const showTodo = (todo) => (
   $.ajax({
-    method: 'DELETE',
+    method: 'GET',
     url: `/api/todos/${todo.id}`,
-    data: { todo },
   })
 );
 
 export const updateTodo = (todo) => (
   $.ajax({
     method: 'PATCH',
+    url: `/api/todos/${todo.id}`,
+    data: { todo },
+  })
+);
+
+export const destroyTodo = (todo) => (
+  $.ajax({
+    method: 'DELETE',
     url: `/api/todos/${todo.id}`,
     data: { todo },
   })

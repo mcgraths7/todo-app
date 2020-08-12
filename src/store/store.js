@@ -1,15 +1,13 @@
-import { createStore, applyMiddleware } from 'redux';
-import logger from 'redux-logger';
+import { configureStore } from '@reduxjs/toolkit';
 
-import rootReducer from '../reducers/rootReducer';
-import thunk from '../middleware/thunk';
+import todoReducer from '../reducers/todoSlice';
+import stepReducer from '../reducers/stepSlice';
 
-const configureStore = (preloadedState = {}) => (
-  createStore(
-    rootReducer,
-    preloadedState,
-    applyMiddleware(logger, thunk),
-  )
-);
+const store = configureStore({
+  reducer: {
+    todos: todoReducer,
+    steps: stepReducer,
+  },
+});
 
-export default configureStore;
+export default store;

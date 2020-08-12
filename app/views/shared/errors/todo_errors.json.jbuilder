@@ -1,0 +1,1 @@
+json.partial! 'shared/errors/error', collection: @todo.errors.full_messages, as: :error

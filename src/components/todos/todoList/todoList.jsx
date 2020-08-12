@@ -1,22 +1,46 @@
 import React from 'react';
 
-import TodoListItem from '../todoItem/todoListItem';
+import TodoListItem from '../todoListItem/todoListItem';
 import TodoForm from './todoForm';
 
 class TodoList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataFetched: false,
+    };
+  }
+
   componentDidMount() {
     const { fetchTodos } = this.props;
-    fetchTodos();
+    fetchTodos()
+      .then(() => this.setState({
+        dataFetched: true,
+      }));
   }
 
   render() {
     const {
       createTodo,
-      destroyTodo,
-      fetchSteps,
       errors,
       todos,
     } = this.props;
+    const { dataFetched } = this.state;
+    if (dataFetched) {
+      return (
+        <div>
+          <TodoForm createTodo={createTodo} />
+          {
+            todos.map((todo) => (
+              <TodoListItem
+                todo={todo}
+                key={todo.id}
+              />
+            ))
+          }
+        </div>
+      );
+    }
     return (
       <div>
         <TodoForm
@@ -24,16 +48,7 @@ class TodoList extends React.Component {
           errors={errors}
         />
         <ul>
-          {
-            todos.map((todo) => (
-              <TodoListItem
-                todo={todo}
-                key={todo.id}
-                destroyTodo={destroyTodo}
-                fetchSteps={fetchSteps}
-              />
-            ))
-          }
+          <li>Loading todos...</li>
         </ul>
       </div>
     );

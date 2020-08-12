@@ -1,21 +1,36 @@
-export const fetchSteps = (todo) => (
+export const fetchSteps = () => (
   $.ajax({
     method: 'GET',
-    url: `api/todos/${todo.id}/steps`,
+    url: 'api/steps',
   })
 );
 
-export const createStep = (todo, step) => (
+export const createStep = (step) => (
   $.ajax({
     method: 'POST',
-    url: `api/todos/${todo.id}/steps`,
-    data: { todo, step },
+    url: 'api/steps',
+    data: { step },
   })
 );
 
-export const destroyStep = (todo, step) => (
+export const showStep = (step) => (
   $.ajax({
-    method: 'DELETE',
-    url: `api/todos/${todo.id}/steps/${step.id}`,
+    method: 'GET',
+    url: `api/steps/${step.id}`,
   })
 );
+
+export const updateStep = (step) => (
+  $.ajax({
+    method: 'PATCH',
+    url: `api/steps/${step.id}`,
+  })
+);
+
+export const destroyStep = (step) => (
+  $.ajax({
+    method: 'DELETE',
+    url: `api/steps/${step.id}`,
+  })
+);
+

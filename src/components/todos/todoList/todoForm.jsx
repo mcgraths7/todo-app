@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorsList from './errorsList';
+// import ErrorsList from './errorsList';
 import TagList from './tagList';
 
 class TodoForm extends React.Component {
@@ -101,12 +101,12 @@ class TodoForm extends React.Component {
       tagName,
       tagNames,
     } = this.state;
-    const { errors } = this.props;
+    // const { errors } = this.props;
     return (
       <div>
 
         <form>
-          <ErrorsList errors={errors} />
+          {/* <ErrorsList errors={errors} /> */}
           <label htmlFor="todoTitle">
             Title
             <input type="text" name="todoTitle" onChange={this.updateTitle} onKeyDown={this.addTodoOnReturn} value={title} />

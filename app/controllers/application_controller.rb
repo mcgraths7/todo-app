@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_not_logged_in
-    redirect_to new_session_url unless logged_in?
+    redirect_to login_url unless logged_in?
   end
 
   def deny_access_if_not_logged_in

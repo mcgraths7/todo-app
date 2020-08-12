@@ -14,15 +14,14 @@ class TodoListItemDetailView extends React.Component {
     let { todo } = this.props;
     todo = {
       id: todo.id,
-      title: todo.title,
-      body: todo.body,
       isDone: !todo.isDone,
     };
     updateTodo(todo);
   }
 
   render() {
-    const { todo, steps } = this.props;
+    const { todo } = this.props;
+    const { steps } = todo;
     return (
       <div>
         <p>{todo.body}</p>
@@ -31,7 +30,7 @@ class TodoListItemDetailView extends React.Component {
         </p>
         <button type="button" onClick={this.toggleComplete}>{todo.isDone ? 'Undo' : 'Done'}</button>
         <h4><small>Sub-Tasks</small></h4>
-        <StepListContainer todo={todo} key={todo} steps={steps} />
+        <StepListContainer todo={todo} key={todo.title} steps={steps} />
       </div>
     );
   }

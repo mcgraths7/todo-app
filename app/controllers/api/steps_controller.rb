@@ -1,29 +1,48 @@
 class Api::StepsController < ApplicationController
-  before_action :deny_access_if_not_logged_in
+  # before_action :deny_access_if_not_logged_in
+  
   def index
-    @steps = Step.where(todo_id: params[:todo_id])
+    @steps = Step.all
     if @steps
-      render json: @steps, status: :ok
+      render :index, status: :ok
     else
-      render json: @steps.errors.full_messages, status: :no_content
+      render 'shared/errors/step_errors'
     end
   end
 
   def create
     @step = Step.new(step_params)
     if @step.save
-      render json: @step, status: :created
+      render :show, status: :created
     else
-      render json: @step.errors.full_messages, status: :bad_request
+      render 'shared/errors/step_errors'
+    end
+  end
+
+  def show
+    @step = set_step
+    if @step
+      render :show
+    else
+      render 'shared/errors/step_errors'
+    end
+  end
+
+  def update
+    @step = set_step
+    if @step.update(step_params)
+      render :show
+    else
+      render 'shared/errors/step_errors'
     end
   end
 
   def destroy
     @step = set_step
     if @step.destroy
-      render json: @step, status: :ok
+      render :show, status: :ok
     else
-      render json: @step, status: :unprocessable_entity
+      render 'shared/errors/step_errors'
     end
   end
 

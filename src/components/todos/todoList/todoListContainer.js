@@ -1,32 +1,17 @@
 import { connect } from 'react-redux';
 
 import TodoList from './todoList';
-import {
-  fetchTodos,
-  createTodo,
-  destroyTodo,
-} from '../../../actions/todoActions';
-import {
-  receiveErrors,
-  clearErrors,
-} from '../../../actions/errorActions';
-import {
-  fetchSteps,
-} from '../../../actions/stepActions';
 import { allTodos } from '../../../reducers/selectors';
+import { addTodo, deleteTodo, fetchTodos } from '../../../reducers/todoSlice';
 
 const mapStateToProps = (state) => ({
   todos: allTodos(state),
-  errors: state.errors,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTodos: () => dispatch(fetchTodos()),
-  fetchSteps: (todo) => dispatch(fetchSteps(todo)),
-  createTodo: (todo) => dispatch(createTodo(todo)),
-  destroyTodo: (todo) => dispatch(destroyTodo(todo)),
-  receiveErrors: (errors) => dispatch(receiveErrors(errors)),
-  clearErrors: () => dispatch(clearErrors()),
+  addTodo: (todo) => dispatch(addTodo(todo)),
+  deleteTodo: (todo) => dispatch(deleteTodo(todo)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

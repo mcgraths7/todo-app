@@ -1,0 +1,1 @@
+json.partial! 'api/steps/step', collection: @steps, as: :step

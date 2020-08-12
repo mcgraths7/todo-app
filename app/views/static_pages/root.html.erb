@@ -1,4 +1,6 @@
 <div id='content'></div>
-<%= form_for :user, method: 'get', url: logout_url do |f| %>
-  <button type='submit'>Logout</button>
+<% if @user %>
+  <%= form_for :user, method: 'get', url: logout_url do |f| %>
+    <button type='submit'>Logout</button>
+  <% end %>
 <% end %>

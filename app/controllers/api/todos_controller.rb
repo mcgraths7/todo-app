@@ -3,9 +3,17 @@ class Api::TodosController < ApplicationController
   before_action :redirect_if_not_logged_in
 
   def index
-    @todos = Todo.where(user_id: current_user.id)
-    if @todos
-      render json: @todos, status: :ok, include: :tags
+    # @todos = Todo.where(user_id: current_user.id)
+    @todos = Todo.all
+    render :index
+  end
+
+  def show
+    @todo = set_todo
+    if @todo
+      render :show
+    else
+      render 'shared/errors/todo_errors'
     end
   end
 
@@ -15,27 +23,27 @@ class Api::TodosController < ApplicationController
       @todo.tag_names = todo_params[:tag_names]
     end
     if @todo.save
-      render json: @todo, include: :tags, status: :ok
+      render :show, status: :ok
     else
-      render json: @todo.errors.full_messages, status: :bad_request
+      render 'shared/errors/todo_errors'
     end
   end
 
   def update
     @todo = set_todo
     if @todo.update(todo_params)
-      render json: @todo, status: :ok, include: :tags
+      render :show, status: :ok
     else
-      render json: @todo.errors.full_messages, status: :unprocessable_entity
+      render 'shared/errors/todo_errors'
     end
   end
 
   def destroy
     @todo = set_todo
     if @todo.destroy
-      render json: @todo, status: :ok, include: :tags
+      render :show, status: :ok
     else
-      render json: @todo.errors.full_messages, status: :unprocessable_entity
+      render 'shared/errors/todo_errors'
     end
   end
 
@@ -47,5 +55,4 @@ class Api::TodosController < ApplicationController
   def set_todo
     current_user.todos.find(params[:id])
   end
-
 end

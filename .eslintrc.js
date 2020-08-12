@@ -10,15 +10,15 @@ module.exports = {
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      experimentalObjectRestSpread: true,
     },
-    ecmaVersion: 6,
+    ecmaVersion: 10,
     sourceType: 'module',
   },
   plugins: [
     'react',
   ],
   rules: {
-    "prefer-object-spread": 0,
     "no-shadow": 0,
     "react/prop-types": 0,
     "import/no-named-as-default": 0,

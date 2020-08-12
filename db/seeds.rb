@@ -19,6 +19,13 @@ Step.create(title: 'fill bucket with soapy water', todo_id: 1)
 Step.create(title: 'get sponge', todo_id: 1)
 Step.create(title: 'get washin\'', todo_id: 1)
 
+Step.create(title: 'get pan', todo_id: 5)
+Step.create(title: 'get veg', todo_id: 5)
+Step.create(title: 'get meat', todo_id: 5)
+Step.create(title: 'cook meat', todo_id: 5)
+Step.create(title: 'cook veg', todo_id: 5)
+Step.create(title: 'plate up', todo_id: 5)
+
 Tag.create(name: 'Work')
 Tag.create(name: 'Fitness')
 Tag.create(name: 'Errands')

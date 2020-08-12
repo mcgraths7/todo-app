@@ -12,11 +12,6 @@ class TodoListItem extends React.Component {
     this.toggleDetail = this.toggleDetail.bind(this);
   }
 
-  componentDidMount() {
-    const { fetchSteps, todo } = this.props;
-    fetchSteps(todo);
-  }
-
   destroyTodo(e) {
     e.preventDefault();
     const { todo, destroyTodo } = this.props;
@@ -34,10 +29,11 @@ class TodoListItem extends React.Component {
   render() {
     const { todo } = this.props;
     const { detail } = this.state;
-    const tagNames = todo.tags.map((tag) => tag.name);
+    const { tags, title } = todo;
+    const tagNames = tags ? tags.map((tag) => tag.name) : [];
     return (
       <li>
-        <h3>{todo.title}</h3>
+        <h3>{title}</h3>
         <small>{tagNames.join(' | ')}</small>
         {detail ? <TodoListItemDetailViewContainer todo={todo} /> : ''}
         <p>
