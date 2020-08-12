@@ -34970,6 +34970,7 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener('DOMContentLoaded', function () {
   var content = document.getElementById('content');
+  window.store = _store_store__WEBPACK_IMPORTED_MODULE_3__["default"];
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_root__WEBPACK_IMPORTED_MODULE_2__["default"], {
     store: _store_store__WEBPACK_IMPORTED_MODULE_3__["default"]
   }), content);
@@ -35008,7 +35009,7 @@ var allSteps = function allSteps(state) {
 };
 var stepsByTodoId = function stepsByTodoId(steps, todoId) {
   return steps.filter(function (step) {
-    return step.todo.id === todoId;
+    return step.todoId === todoId;
   });
 };
 

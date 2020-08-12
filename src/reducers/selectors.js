@@ -14,5 +14,5 @@ export const allSteps = (state) => {
 };
 
 export const stepsByTodoId = (steps, todoId) => (
-  steps.filter((step) => step.todo.id === todoId)
+  steps.filter((step) => step.todoId === todoId)
 );
