@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import * as StepAPIUtils from '../util/stepAPIUtil';
+
 export const stepSlice = createSlice({
   name: 'steps',
   initialState: {
@@ -7,11 +9,6 @@ export const stepSlice = createSlice({
     allIds: [],
   },
   reducers: {
-    addStep: (state, action) => {
-      const { payload } = action;
-      state.byId[payload.id] = payload;
-      state.allIds.push(payload.id);
-    },
     addSteps: (state, action) => {
       const { payload } = action;
       payload.map((step) => {
@@ -20,6 +17,15 @@ export const stepSlice = createSlice({
         return state;
       });
     },
+    addStep: (state, action) => {
+      const { payload } = action;
+      state.byId[payload.id] = payload;
+      state.allIds.push(payload.id);
+    },
+    updateStep: (state, action) => {
+      const { payload } = action;
+      state.byId[payload.id] = payload;
+    },
     deleteStep: (state, action) => {
       const { payload } = action;
       delete state.byId[payload.id];
@@ -27,10 +33,6 @@ export const stepSlice = createSlice({
       if (idx > -1) {
         state.allIds.splice(idx, 1);
       }
-    },
-    updateStep: (state, action) => {
-      const { payload } = action;
-      state.byId[payload.id] = payload;
     },
   },
 });
@@ -41,5 +43,21 @@ export const {
   deleteStep,
   updateStep,
 } = stepSlice.actions;
+
+export const asyncFetchSteps = () => (dispatch) => (
+  StepAPIUtils.fetchSteps().then((steps) => dispatch(addSteps(steps)))
+);
+
+export const asyncCreateStep = (step) => (dispatch) => (
+  StepAPIUtils.createStep(step).then((step) => dispatch(addStep(step)))
+);
+
+export const asyncUpdateStep = (step) => (dispatch) => (
+  StepAPIUtils.updateStep(step).then((step) => dispatch(updateStep(step)))
+);
+
+export const asyncDestroyStep = (step) => (dispatch) => (
+  StepAPIUtils.destroyStep(step).then((step) => dispatch(deleteStep(step)))
+);
 
 export default stepSlice.reducer;

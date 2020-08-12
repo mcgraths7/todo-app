@@ -8,7 +8,6 @@ const StepList = (props) => {
     steps,
     todo,
     createStep,
-    destroyStep,
   } = props;
   return (
     <div>
@@ -18,7 +17,6 @@ const StepList = (props) => {
             todo={todo}
             step={step}
             key={step.id}
-            destroyStep={destroyStep}
           />
         ))}
       </ul>

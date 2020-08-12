@@ -9,14 +9,6 @@ export const todoSlice = createSlice({
     allIds: [],
   },
   reducers: {
-    addTodo: (state, action) => {
-      const { payload } = action;
-      state.byId[payload.id] = payload;
-      const idx = state.allIds.indexOf(payload.id);
-      if (idx === -1) {
-        state.allIds.push(payload.id);
-      }
-    },
     addTodos: (state, action) => {
       const { payload } = action;
       payload.map((todo) => {
@@ -28,6 +20,18 @@ export const todoSlice = createSlice({
         return state;
       });
     },
+    addTodo: (state, action) => {
+      const { payload } = action;
+      state.byId[payload.id] = payload;
+      const idx = state.allIds.indexOf(payload.id);
+      if (idx === -1) {
+        state.allIds.push(payload.id);
+      }
+    },
+    updateTodo: (state, action) => {
+      const { payload } = action;
+      state.byId[payload.id] = payload;
+    },
     deleteTodo: (state, action) => {
       const { payload } = action;
       delete state.byId[payload.id];
@@ -35,10 +39,6 @@ export const todoSlice = createSlice({
       if (idx > -1) {
         state.allIds.splice(idx, 1);
       }
-    },
-    updateTodo: (state, action) => {
-      const { payload } = action;
-      state.byId[payload.id] = payload;
     },
   },
 });
@@ -50,15 +50,20 @@ export const {
   updateTodo,
 } = todoSlice.actions;
 
-// export const fetchTodos = () => (dispatch) => (
-//   TodoAPIUtils.fetchTodos()
-//     .then((todos) => {
-//       dispatch(addTodos(todos));
-//     })
-// );
-
-export const fetchTodos = () => (dispatch) => (
+export const asyncFetchTodos = () => (dispatch) => (
   TodoAPIUtils.fetchTodos().then((todos) => dispatch(addTodos(todos)))
+);
+
+export const asyncCreateTodo = (todo) => (dispatch) => (
+  TodoAPIUtils.createTodo(todo).then((todo) => dispatch(addTodo(todo)))
+);
+
+export const asyncUpdateTodo = (todo) => (dispatch) => (
+  TodoAPIUtils.updateTodo(todo).then((todo) => dispatch(updateTodo(todo)))
+);
+
+export const asyncDestroyTodo = (todo) => (dispatch) => (
+  TodoAPIUtils.destroyTodo(todo).then((todo) => dispatch(deleteTodo(todo)))
 );
 
 export default todoSlice.reducer;

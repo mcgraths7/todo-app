@@ -3,8 +3,7 @@ class Api::TodosController < ApplicationController
   before_action :redirect_if_not_logged_in
 
   def index
-    # @todos = Todo.where(user_id: current_user.id)
-    @todos = Todo.all
+    @todos = Todo.where(user_id: current_user.id)
     render :index
   end
 

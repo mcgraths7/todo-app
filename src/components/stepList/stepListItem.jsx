@@ -1,9 +1,9 @@
 import React from 'react';
 
 const StepListItem = (props) => {
-  const { todo, step, destroyStep } = props;
+  const { step, destroyStep } = props;
   const completeStep = () => {
-    destroyStep(todo, step);
+    destroyStep(step);
   };
   return (
     <li key={step}>

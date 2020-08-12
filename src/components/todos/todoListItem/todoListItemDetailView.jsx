@@ -11,17 +11,14 @@ class TodoListItemDetailView extends React.Component {
   toggleComplete(e) {
     e.preventDefault();
     const { updateTodo } = this.props;
-    let { todo } = this.props;
-    todo = {
-      id: todo.id,
-      isDone: !todo.isDone,
-    };
-    updateTodo(todo);
+    const { todo } = this.props;
+    const newTodo = { ...todo };
+    newTodo.isDone = !newTodo.isDone;
+    updateTodo(newTodo);
   }
 
   render() {
-    const { todo } = this.props;
-    const { steps } = todo;
+    const { todo, steps } = this.props;
     return (
       <div>
         <p>{todo.body}</p>

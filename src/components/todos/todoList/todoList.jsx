@@ -12,8 +12,11 @@ class TodoList extends React.Component {
   }
 
   componentDidMount() {
-    const { fetchTodos } = this.props;
+    const { fetchTodos, fetchSteps } = this.props;
     fetchTodos()
+      .then(() => {
+        fetchSteps();
+      })
       .then(() => this.setState({
         dataFetched: true,
       }));
@@ -21,9 +24,11 @@ class TodoList extends React.Component {
 
   render() {
     const {
-      createTodo,
-      errors,
       todos,
+      steps,
+      stepsByTodoId,
+      createTodo,
+      destroyTodo,
     } = this.props;
     const { dataFetched } = this.state;
     if (dataFetched) {
@@ -35,6 +40,8 @@ class TodoList extends React.Component {
               <TodoListItem
                 todo={todo}
                 key={todo.id}
+                steps={stepsByTodoId(steps, todo.id)}
+                destroyTodo={destroyTodo}
               />
             ))
           }
@@ -45,7 +52,6 @@ class TodoList extends React.Component {
       <div>
         <TodoForm
           createTodo={createTodo}
-          errors={errors}
         />
         <ul>
           <li>Loading todos...</li>

@@ -14,7 +14,7 @@ class TodoListItem extends React.Component {
 
   destroyTodo(e) {
     e.preventDefault();
-    const { todo, destroyTodo } = this.props;
+    const { todo, destroyTodo, destroyStep } = this.props;
     destroyTodo(todo);
   }
 
@@ -27,7 +27,7 @@ class TodoListItem extends React.Component {
   }
 
   render() {
-    const { todo } = this.props;
+    const { todo, steps } = this.props;
     const { detail } = this.state;
     const { tags, title } = todo;
     const tagNames = tags ? tags.map((tag) => tag.name) : [];
@@ -35,7 +35,7 @@ class TodoListItem extends React.Component {
       <li>
         <h3>{title}</h3>
         <small>{tagNames.join(' | ')}</small>
-        {detail ? <TodoListItemDetailViewContainer todo={todo} /> : ''}
+        {detail ? <TodoListItemDetailViewContainer todo={todo} steps={steps} /> : ''}
         <p>
           <span>
             <button type="button" onClick={this.toggleDetail}>Show/Hide Details</button>

@@ -34143,7 +34143,7 @@ var StepForm = /*#__PURE__*/function (_React$Component) {
         todo_id: todo.id,
         title: title
       };
-      createStep(todo, step).then(function () {
+      createStep(step).then(function () {
         _this2.resetTitle();
       });
     }
@@ -34213,14 +34213,12 @@ __webpack_require__.r(__webpack_exports__);
 var StepList = function StepList(props) {
   var steps = props.steps,
       todo = props.todo,
-      createStep = props.createStep,
-      destroyStep = props.destroyStep;
+      createStep = props.createStep;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, steps.map(function (step) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stepListItemContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
       todo: todo,
       step: step,
-      key: step.id,
-      destroyStep: destroyStep
+      key: step.id
     });
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stepForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
     todo: todo,
@@ -34243,11 +34241,17 @@ var StepList = function StepList(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _stepList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stepList */ "./src/components/stepList/stepList.jsx");
+/* harmony import */ var _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../reducers/stepSlice */ "./src/reducers/stepSlice.js");
 
 
 
-var mapDispatchToProps = function mapDispatchToProps() {
-  return {};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    createStep: function createStep(step) {
+      return dispatch(Object(_reducers_stepSlice__WEBPACK_IMPORTED_MODULE_2__["asyncCreateStep"])(step));
+    }
+  };
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(null, mapDispatchToProps)(_stepList__WEBPACK_IMPORTED_MODULE_1__["default"]));
@@ -34268,12 +34272,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var StepListItem = function StepListItem(props) {
-  var todo = props.todo,
-      step = props.step,
+  var step = props.step,
       destroyStep = props.destroyStep;
 
   var completeStep = function completeStep() {
-    destroyStep(todo, step);
+    destroyStep(step);
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
@@ -34299,11 +34302,17 @@ var StepListItem = function StepListItem(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _stepListItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stepListItem */ "./src/components/stepList/stepListItem.jsx");
+/* harmony import */ var _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../reducers/stepSlice */ "./src/reducers/stepSlice.js");
 
 
 
-var mapDispatchToProps = function mapDispatchToProps() {
-  return {};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    destroyStep: function destroyStep(step) {
+      return dispatch(Object(_reducers_stepSlice__WEBPACK_IMPORTED_MODULE_2__["asyncDestroyStep"])(step));
+    }
+  };
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(null, mapDispatchToProps)(_stepListItem__WEBPACK_IMPORTED_MODULE_1__["default"]));
@@ -34611,8 +34620,12 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      var fetchTodos = this.props.fetchTodos;
+      var _this$props = this.props,
+          fetchTodos = _this$props.fetchTodos,
+          fetchSteps = _this$props.fetchSteps;
       fetchTodos().then(function () {
+        fetchSteps();
+      }).then(function () {
         return _this2.setState({
           dataFetched: true
         });
@@ -34621,10 +34634,12 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          createTodo = _this$props.createTodo,
-          errors = _this$props.errors,
-          todos = _this$props.todos;
+      var _this$props2 = this.props,
+          todos = _this$props2.todos,
+          steps = _this$props2.steps,
+          stepsByTodoId = _this$props2.stepsByTodoId,
+          createTodo = _this$props2.createTodo,
+          destroyTodo = _this$props2.destroyTodo;
       var dataFetched = this.state.dataFetched;
 
       if (dataFetched) {
@@ -34633,14 +34648,15 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         }), todos.map(function (todo) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItem_todoListItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
             todo: todo,
-            key: todo.id
+            key: todo.id,
+            steps: stepsByTodoId(steps, todo.id),
+            destroyTodo: destroyTodo
           });
         }));
       }
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        createTodo: createTodo,
-        errors: errors
+        createTodo: createTodo
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "Loading todos...")));
     }
   }]);
@@ -34665,6 +34681,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todoList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoList */ "./src/components/todos/todoList/todoList.jsx");
 /* harmony import */ var _reducers_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../reducers/selectors */ "./src/reducers/selectors.js");
 /* harmony import */ var _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../reducers/todoSlice */ "./src/reducers/todoSlice.js");
+/* harmony import */ var _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../reducers/stepSlice */ "./src/reducers/stepSlice.js");
+
 
 
 
@@ -34672,20 +34690,28 @@ __webpack_require__.r(__webpack_exports__);
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    todos: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_2__["allTodos"])(state)
+    todos: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_2__["allTodos"])(state),
+    steps: Object(_reducers_selectors__WEBPACK_IMPORTED_MODULE_2__["allSteps"])(state),
+    stepsByTodoId: _reducers_selectors__WEBPACK_IMPORTED_MODULE_2__["stepsByTodoId"]
   };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchTodos: function fetchTodos() {
-      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__["fetchTodos"])());
+      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__["asyncFetchTodos"])());
     },
-    addTodo: function addTodo(todo) {
-      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__["addTodo"])(todo));
+    createTodo: function createTodo(todo) {
+      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__["asyncCreateTodo"])(todo));
     },
-    deleteTodo: function deleteTodo(todo) {
-      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__["deleteTodo"])(todo));
+    updateTodo: function updateTodo(todo) {
+      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__["asyncUpdateTodo"])(todo));
+    },
+    destroyTodo: function destroyTodo(todo) {
+      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_3__["asyncDestroyTodo"])(todo));
+    },
+    fetchSteps: function fetchSteps() {
+      return dispatch(Object(_reducers_stepSlice__WEBPACK_IMPORTED_MODULE_4__["asyncFetchSteps"])());
     }
   };
 };
@@ -34756,7 +34782,8 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
       e.preventDefault();
       var _this$props = this.props,
           todo = _this$props.todo,
-          destroyTodo = _this$props.destroyTodo;
+          destroyTodo = _this$props.destroyTodo,
+          destroyStep = _this$props.destroyStep;
       destroyTodo(todo);
     }
   }, {
@@ -34771,7 +34798,9 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var todo = this.props.todo;
+      var _this$props2 = this.props,
+          todo = _this$props2.todo,
+          steps = _this$props2.steps;
       var detail = this.state.detail;
       var tags = todo.tags,
           title = todo.title;
@@ -34779,7 +34808,8 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
         return tag.name;
       }) : [];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, tagNames.join(' | ')), detail ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItemDetailViewContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        todo: todo
+        todo: todo,
+        steps: steps
       }) : '', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: this.toggleDetail
@@ -34810,6 +34840,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _stepList_stepListContainer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../stepList/stepListContainer */ "./src/components/stepList/stepListContainer.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34855,17 +34891,18 @@ var TodoListItemDetailView = /*#__PURE__*/function (_React$Component) {
       e.preventDefault();
       var updateTodo = this.props.updateTodo;
       var todo = this.props.todo;
-      todo = {
-        id: todo.id,
-        isDone: !todo.isDone
-      };
-      updateTodo(todo);
+
+      var newTodo = _objectSpread({}, todo);
+
+      newTodo.isDone = !newTodo.isDone;
+      updateTodo(newTodo);
     }
   }, {
     key: "render",
     value: function render() {
-      var todo = this.props.todo;
-      var steps = todo.steps;
+      var _this$props = this.props,
+          todo = _this$props.todo,
+          steps = _this$props.steps;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, todo.body), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, todo.isDone ? ' Complete' : ' Incomplete')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: this.toggleComplete
@@ -34895,9 +34932,20 @@ var TodoListItemDetailView = /*#__PURE__*/function (_React$Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _todoListItemDetailView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoListItemDetailView */ "./src/components/todos/todoListItem/todoListItemDetailView.jsx");
+/* harmony import */ var _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../reducers/todoSlice */ "./src/reducers/todoSlice.js");
 
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(null, null)(_todoListItemDetailView__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    updateTodo: function updateTodo(todo) {
+      return dispatch(Object(_reducers_todoSlice__WEBPACK_IMPORTED_MODULE_2__["updateTodo"])(todo));
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(null, mapDispatchToProps)(_todoListItemDetailView__WEBPACK_IMPORTED_MODULE_1__["default"]));
 
 /***/ }),
 
@@ -34994,7 +35042,7 @@ var stepsByTodoId = function stepsByTodoId(steps, todoId) {
 /*!***********************************!*\
   !*** ./src/reducers/stepSlice.js ***!
   \***********************************/
-/*! exports provided: stepSlice, addStep, addSteps, deleteStep, updateStep, default */
+/*! exports provided: stepSlice, addStep, addSteps, deleteStep, updateStep, asyncFetchSteps, asyncCreateStep, asyncUpdateStep, asyncDestroyStep, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35004,7 +35052,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addSteps", function() { return addSteps; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteStep", function() { return deleteStep; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateStep", function() { return updateStep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncFetchSteps", function() { return asyncFetchSteps; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncCreateStep", function() { return asyncCreateStep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncUpdateStep", function() { return asyncUpdateStep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncDestroyStep", function() { return asyncDestroyStep; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony import */ var _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/stepAPIUtil */ "./src/util/stepAPIUtil.js");
+
 
 var stepSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlice"])({
   name: 'steps',
@@ -35013,11 +35067,6 @@ var stepSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
     allIds: []
   },
   reducers: {
-    addStep: function addStep(state, action) {
-      var payload = action.payload;
-      state.byId[payload.id] = payload;
-      state.allIds.push(payload.id);
-    },
     addSteps: function addSteps(state, action) {
       var payload = action.payload;
       payload.map(function (step) {
@@ -35025,6 +35074,15 @@ var stepSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
         state.allIds.push(step.id);
         return state;
       });
+    },
+    addStep: function addStep(state, action) {
+      var payload = action.payload;
+      state.byId[payload.id] = payload;
+      state.allIds.push(payload.id);
+    },
+    updateStep: function updateStep(state, action) {
+      var payload = action.payload;
+      state.byId[payload.id] = payload;
     },
     deleteStep: function deleteStep(state, action) {
       var payload = action.payload;
@@ -35034,10 +35092,6 @@ var stepSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
       if (idx > -1) {
         state.allIds.splice(idx, 1);
       }
-    },
-    updateStep: function updateStep(state, action) {
-      var payload = action.payload;
-      state.byId[payload.id] = payload;
     }
   }
 });
@@ -35047,6 +35101,34 @@ var _stepSlice$actions = stepSlice.actions,
     deleteStep = _stepSlice$actions.deleteStep,
     updateStep = _stepSlice$actions.updateStep;
 
+var asyncFetchSteps = function asyncFetchSteps() {
+  return function (dispatch) {
+    return _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_1__["fetchSteps"]().then(function (steps) {
+      return dispatch(addSteps(steps));
+    });
+  };
+};
+var asyncCreateStep = function asyncCreateStep(step) {
+  return function (dispatch) {
+    return _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_1__["createStep"](step).then(function (step) {
+      return dispatch(addStep(step));
+    });
+  };
+};
+var asyncUpdateStep = function asyncUpdateStep(step) {
+  return function (dispatch) {
+    return _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_1__["updateStep"](step).then(function (step) {
+      return dispatch(updateStep(step));
+    });
+  };
+};
+var asyncDestroyStep = function asyncDestroyStep(step) {
+  return function (dispatch) {
+    return _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_1__["destroyStep"](step).then(function (step) {
+      return dispatch(deleteStep(step));
+    });
+  };
+};
 /* harmony default export */ __webpack_exports__["default"] = (stepSlice.reducer);
 
 /***/ }),
@@ -35055,7 +35137,7 @@ var _stepSlice$actions = stepSlice.actions,
 /*!***********************************!*\
   !*** ./src/reducers/todoSlice.js ***!
   \***********************************/
-/*! exports provided: todoSlice, addTodo, addTodos, deleteTodo, updateTodo, fetchTodos, default */
+/*! exports provided: todoSlice, addTodo, addTodos, deleteTodo, updateTodo, asyncFetchTodos, asyncCreateTodo, asyncUpdateTodo, asyncDestroyTodo, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35065,7 +35147,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addTodos", function() { return addTodos; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodo", function() { return deleteTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateTodo", function() { return updateTodo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTodos", function() { return fetchTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncFetchTodos", function() { return asyncFetchTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncCreateTodo", function() { return asyncCreateTodo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncUpdateTodo", function() { return asyncUpdateTodo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncDestroyTodo", function() { return asyncDestroyTodo; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 /* harmony import */ var _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/todoApiUtil */ "./src/util/todoApiUtil.js");
 
@@ -35077,15 +35162,6 @@ var todoSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
     allIds: []
   },
   reducers: {
-    addTodo: function addTodo(state, action) {
-      var payload = action.payload;
-      state.byId[payload.id] = payload;
-      var idx = state.allIds.indexOf(payload.id);
-
-      if (idx === -1) {
-        state.allIds.push(payload.id);
-      }
-    },
     addTodos: function addTodos(state, action) {
       var payload = action.payload;
       payload.map(function (todo) {
@@ -35099,6 +35175,19 @@ var todoSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
         return state;
       });
     },
+    addTodo: function addTodo(state, action) {
+      var payload = action.payload;
+      state.byId[payload.id] = payload;
+      var idx = state.allIds.indexOf(payload.id);
+
+      if (idx === -1) {
+        state.allIds.push(payload.id);
+      }
+    },
+    updateTodo: function updateTodo(state, action) {
+      var payload = action.payload;
+      state.byId[payload.id] = payload;
+    },
     deleteTodo: function deleteTodo(state, action) {
       var payload = action.payload;
       delete state.byId[payload.id];
@@ -35107,10 +35196,6 @@ var todoSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
       if (idx > -1) {
         state.allIds.splice(idx, 1);
       }
-    },
-    updateTodo: function updateTodo(state, action) {
-      var payload = action.payload;
-      state.byId[payload.id] = payload;
     }
   }
 });
@@ -35118,18 +35203,33 @@ var _todoSlice$actions = todoSlice.actions,
     addTodo = _todoSlice$actions.addTodo,
     addTodos = _todoSlice$actions.addTodos,
     deleteTodo = _todoSlice$actions.deleteTodo,
-    updateTodo = _todoSlice$actions.updateTodo; // export const fetchTodos = () => (dispatch) => (
-//   TodoAPIUtils.fetchTodos()
-//     .then((todos) => {
-//       dispatch(addTodos(todos));
-//     })
-// );
+    updateTodo = _todoSlice$actions.updateTodo;
 
-
-var fetchTodos = function fetchTodos() {
+var asyncFetchTodos = function asyncFetchTodos() {
   return function (dispatch) {
     return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_1__["fetchTodos"]().then(function (todos) {
       return dispatch(addTodos(todos));
+    });
+  };
+};
+var asyncCreateTodo = function asyncCreateTodo(todo) {
+  return function (dispatch) {
+    return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_1__["createTodo"](todo).then(function (todo) {
+      return dispatch(addTodo(todo));
+    });
+  };
+};
+var asyncUpdateTodo = function asyncUpdateTodo(todo) {
+  return function (dispatch) {
+    return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_1__["updateTodo"](todo).then(function (todo) {
+      return dispatch(updateTodo(todo));
+    });
+  };
+};
+var asyncDestroyTodo = function asyncDestroyTodo(todo) {
+  return function (dispatch) {
+    return _util_todoApiUtil__WEBPACK_IMPORTED_MODULE_1__["destroyTodo"](todo).then(function (todo) {
+      return dispatch(deleteTodo(todo));
     });
   };
 };
