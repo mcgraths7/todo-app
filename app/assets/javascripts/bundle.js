@@ -34964,36 +34964,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_root__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/root */ "./src/components/root.jsx");
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/store */ "./src/store/store.js");
-/* harmony import */ var _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./reducers/todoSlice */ "./src/reducers/todoSlice.js");
-/* harmony import */ var _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./reducers/stepSlice */ "./src/reducers/stepSlice.js");
-/* harmony import */ var _reducers_selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./reducers/selectors */ "./src/reducers/selectors.js");
-/* harmony import */ var _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./util/stepAPIUtil */ "./src/util/stepAPIUtil.js");
 
 
-
-
-
-
- // import { fetchTodos } from './util/todoApiUtil';
 
 
 document.addEventListener('DOMContentLoaded', function () {
   var content = document.getElementById('content');
-  window.store = _store_store__WEBPACK_IMPORTED_MODULE_3__["default"];
-  window.addTodo = _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_4__["addTodo"];
-  window.addTodos = _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_4__["addTodos"];
-  window.deleteTodo = _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_4__["deleteTodo"];
-  window.updateTodo = _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_4__["updateTodo"];
-  window.allTodos = _reducers_selectors__WEBPACK_IMPORTED_MODULE_6__["allTodos"];
-  window.todoById = _reducers_selectors__WEBPACK_IMPORTED_MODULE_6__["todoById"];
-  window.allSteps = _reducers_selectors__WEBPACK_IMPORTED_MODULE_6__["allSteps"];
-  window.stepsByTodoId = _reducers_selectors__WEBPACK_IMPORTED_MODULE_6__["stepsByTodoId"];
-  window.fetchTodos = _reducers_todoSlice__WEBPACK_IMPORTED_MODULE_4__["fetchTodos"];
-  window.fetchSteps = _util_stepAPIUtil__WEBPACK_IMPORTED_MODULE_7__["fetchSteps"];
-  window.addStep = _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_5__["addStep"];
-  window.addSteps = _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_5__["addSteps"];
-  window.updateStep = _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_5__["updateStep"];
-  window.deleteStep = _reducers_stepSlice__WEBPACK_IMPORTED_MODULE_5__["deleteStep"];
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_root__WEBPACK_IMPORTED_MODULE_2__["default"], {
     store: _store_store__WEBPACK_IMPORTED_MODULE_3__["default"]
   }), content);
