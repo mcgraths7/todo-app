@@ -3,9 +3,8 @@ import React from 'react';
 class TagForm extends React.Component {
   constructor(props) {
     super(props);
-    const { tagNames } = this.props;
     this.state = {
-      tagName: '',
+      currentTagName: '',
     };
   }
 
@@ -18,8 +17,7 @@ class TagForm extends React.Component {
   addTag(e) {
     const { todo, updateTodo } = this.props;
     e.preventDefault();
-    // updateTodo(todo);
-
+    // updateTodo(todo)
   }
 
   render() {

@@ -2,6 +2,7 @@ import React from 'react';
 
 // import ErrorsList from './errorsList';
 import TagList from './tagList';
+import TagForm from './tagForm';
 
 class TodoForm extends React.Component {
   constructor(props) {

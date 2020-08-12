@@ -28,6 +28,7 @@ class TodoList extends React.Component {
       steps,
       stepsByTodoId,
       createTodo,
+      updateTodo,
       destroyTodo,
     } = this.props;
     const { dataFetched } = this.state;
