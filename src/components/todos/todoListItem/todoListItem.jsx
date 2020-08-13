@@ -14,6 +14,7 @@ class TodoListItem extends React.Component {
     this.updateTagName = this.updateTagName.bind(this);
     this.addTag = this.addTag.bind(this);
     this.addTagOnReturn = this.addTagOnReturn.bind(this);
+    this.clearTagName = this.clearTagName.bind(this);
   }
 
   destroyTodo(e) {
@@ -36,13 +37,22 @@ class TodoListItem extends React.Component {
     });
   }
 
+  clearTagName() {
+    this.setState({
+      currentTagName: '',
+    });
+  }
+
   addTag(e) {
     e.preventDefault();
     const { todo, updateTodo } = this.props;
     const { currentTagName } = this.state;
     const newTodo = { ...todo };
-    newTodo.tags = [...newTodo.tags, { name: currentTagName }];
-    updateTodo(newTodo);
+    newTodo.tagNames = [...newTodo.tagNames, currentTagName];
+    updateTodo(newTodo)
+      .then(() => {
+        this.clearTagName();
+      });
   }
 
   addTagOnReturn(e) {
@@ -54,8 +64,7 @@ class TodoListItem extends React.Component {
   render() {
     const { todo, steps } = this.props;
     const { detail, currentTagName } = this.state;
-    const { tags, title } = todo;
-    const tagNames = tags ? tags.map((tag) => tag.name) : [];
+    const { tagNames, title } = todo;
     return (
       <li>
         <h3>{title}</h3>

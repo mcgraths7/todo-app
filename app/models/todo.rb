@@ -20,8 +20,10 @@ class Todo < ApplicationRecord
   belongs_to :user
   
   def tag_names=(tag_name_arr)
-    self.tags = tag_name_arr.map do |tag_name|
-      Tag.find_or_create_by(name: tag_name.titleize)
+    unless tag_name_arr.empty?
+      self.tags = tag_name_arr.map do |tag_name|
+        Tag.find_or_create_by(name: tag_name.titleize)
+      end
     end
   end
   private

@@ -33,14 +33,7 @@ class Api::TodosController < ApplicationController
 
   def update
     @todo = set_todo
-    tag_params = todo_params[:tags]
-    
-    unless todo_params[:tags].nil?
-      tag_names = todo_params[:tags].map do |tag|
-        tag.name
-      end
-    end
-    @todo.tag_names = tag_names
+    @todo.tag_names = todo_params[:tag_names]
     if @todo.update(title: todo_params[:title], body: todo_params[:body], isDone: todo_params[:isDone])
       render :show, status: :ok
     else
@@ -59,7 +52,7 @@ class Api::TodosController < ApplicationController
 
   private
   def todo_params
-    params.require(:todo).permit(:id, :title, :body, :isDone, {tags: [:name]})
+    params.require(:todo).permit(:id, :title, :body, :isDone, tag_names: [])
   end
 
   def set_todo

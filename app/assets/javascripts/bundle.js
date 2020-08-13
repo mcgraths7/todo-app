@@ -34907,6 +34907,7 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
     _this.updateTagName = _this.updateTagName.bind(_assertThisInitialized(_this));
     _this.addTag = _this.addTag.bind(_assertThisInitialized(_this));
     _this.addTagOnReturn = _this.addTagOnReturn.bind(_assertThisInitialized(_this));
+    _this.clearTagName = _this.clearTagName.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -34936,8 +34937,17 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "clearTagName",
+    value: function clearTagName() {
+      this.setState({
+        currentTagName: ''
+      });
+    }
+  }, {
     key: "addTag",
     value: function addTag(e) {
+      var _this2 = this;
+
       e.preventDefault();
       var _this$props2 = this.props,
           todo = _this$props2.todo,
@@ -34946,10 +34956,10 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
 
       var newTodo = _objectSpread({}, todo);
 
-      newTodo.tags = [].concat(_toConsumableArray(newTodo.tags), [{
-        name: currentTagName
-      }]);
-      updateTodo(newTodo);
+      newTodo.tagNames = [].concat(_toConsumableArray(newTodo.tagNames), [currentTagName]);
+      updateTodo(newTodo).then(function () {
+        _this2.clearTagName();
+      });
     }
   }, {
     key: "addTagOnReturn",
@@ -34967,11 +34977,8 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
       var _this$state = this.state,
           detail = _this$state.detail,
           currentTagName = _this$state.currentTagName;
-      var tags = todo.tags,
+      var tagNames = todo.tagNames,
           title = todo.title;
-      var tagNames = tags ? tags.map(function (tag) {
-        return tag.name;
-      }) : [];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, tagNames.join(' | ')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "todoTags"
       }, "Add Tag", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -35318,11 +35325,21 @@ var todoSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
     addTodos: function addTodos(state, action) {
       var payload = action.payload;
       payload.map(function (todo) {
-        state.byId[todo.id] = todo;
-        var idx = state.allIds.indexOf(todo.id);
+        var tagNames = todo.tags.map(function (tag) {
+          return tag.name;
+        });
+        var newTodo = {
+          id: todo.id,
+          title: todo.title,
+          body: todo.body,
+          isDone: todo.isDone,
+          tagNames: tagNames
+        };
+        state.byId[newTodo.id] = newTodo;
+        var idx = state.allIds.indexOf(newTodo.id);
 
         if (idx === -1) {
-          state.allIds.push(todo.id);
+          state.allIds.push(newTodo.id);
         }
 
         return state;
@@ -35330,16 +35347,36 @@ var todoSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlic
     },
     addTodo: function addTodo(state, action) {
       var payload = action.payload;
-      state.byId[payload.id] = payload;
-      var idx = state.allIds.indexOf(payload.id);
+      var tagNames = payload.tags.map(function (tag) {
+        return tag.name;
+      });
+      var newTodo = {
+        id: payload.id,
+        title: payload.title,
+        body: payload.body,
+        isDone: payload.isDone,
+        tagNames: tagNames
+      };
+      state.byId[newTodo.id] = newTodo;
+      var idx = state.allIds.indexOf(newTodo.id);
 
       if (idx === -1) {
-        state.allIds.push(payload.id);
+        state.allIds.push(newTodo.id);
       }
     },
     updateTodo: function updateTodo(state, action) {
       var payload = action.payload;
-      state.byId[payload.id] = payload;
+      var tagNames = payload.tags.map(function (tag) {
+        return tag.name;
+      });
+      var newTodo = {
+        id: payload.id,
+        title: payload.title,
+        body: payload.body,
+        isDone: payload.isDone,
+        tagNames: tagNames
+      };
+      state.byId[newTodo.id] = newTodo;
     },
     deleteTodo: function deleteTodo(state, action) {
       var payload = action.payload;
@@ -35479,8 +35516,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showTodo", function() { return showTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateTodo", function() { return updateTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyTodo", function() { return destroyTodo; });
-/* harmony import */ var _components_todos_todoList_todoListContainer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/todos/todoList/todoListContainer */ "./src/components/todos/todoList/todoListContainer.js");
-
 var fetchTodos = function fetchTodos() {
   return $.ajax({
     method: 'GET',
@@ -35492,7 +35527,13 @@ var createTodo = function createTodo(todo) {
     method: 'POST',
     url: '/api/todos',
     data: {
-      todo: todo
+      todo: {
+        id: todo.id,
+        title: todo.title,
+        body: todo.body,
+        isDone: todo.isDone,
+        tag_names: todo.tagNames
+      }
     }
   });
 };
@@ -35512,7 +35553,7 @@ var updateTodo = function updateTodo(todo) {
         title: todo.title,
         body: todo.body,
         isDone: todo.isDone,
-        tags: todo.tags
+        tag_names: todo.tagNames
       }
     }
   });

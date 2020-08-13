@@ -1,5 +1,3 @@
-import todoListContainer from "../components/todos/todoList/todoListContainer";
-
 export const fetchTodos = () => (
   $.ajax({
     method: 'GET',
@@ -11,7 +9,15 @@ export const createTodo = (todo) => (
   $.ajax({
     method: 'POST',
     url: '/api/todos',
-    data: { todo },
+    data: {
+      todo: {
+        id: todo.id,
+        title: todo.title,
+        body: todo.body,
+        isDone: todo.isDone,
+        tag_names: todo.tagNames,
+      },
+    },
   })
 );
 
@@ -32,7 +38,7 @@ export const updateTodo = (todo) => (
         title: todo.title,
         body: todo.body,
         isDone: todo.isDone,
-        tags: todo.tags,
+        tag_names: todo.tagNames,
       },
     },
   })
