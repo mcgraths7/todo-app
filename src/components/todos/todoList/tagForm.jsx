@@ -15,8 +15,17 @@ class TagForm extends React.Component {
   }
 
   addTag(e) {
-    const { todo, updateTodo } = this.props;
     e.preventDefault();
+    const { todo, updateTodo } = this.props;
+    const { currentTagName } = this.state;
+    const newTags = todo.tags.map((tag) => ({
+      name: tag.name,
+    }));
+    newTags.push({ name: currentTagName });
+    const updatedTodo = {
+      ...todo,
+      tags: newTags,
+    };
     // updateTodo(todo)
   }
 

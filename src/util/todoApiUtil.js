@@ -1,3 +1,5 @@
+import todoListContainer from "../components/todos/todoList/todoListContainer";
+
 export const fetchTodos = () => (
   $.ajax({
     method: 'GET',
@@ -24,7 +26,15 @@ export const updateTodo = (todo) => (
   $.ajax({
     method: 'PATCH',
     url: `/api/todos/${todo.id}`,
-    data: { todo },
+    data: {
+      todo: {
+        id: todo.id,
+        title: todo.title,
+        body: todo.body,
+        isDone: todo.isDone,
+        tags: todo.tags,
+      },
+    },
   })
 );
 

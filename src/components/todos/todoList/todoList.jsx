@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TodoListItem from '../todoListItem/todoListItem';
+import TodoListItemContainer from '../todoListItem/todoListItemContainer';
 import TodoForm from './todoForm';
 
 class TodoList extends React.Component {
@@ -28,7 +28,6 @@ class TodoList extends React.Component {
       steps,
       stepsByTodoId,
       createTodo,
-      updateTodo,
       destroyTodo,
     } = this.props;
     const { dataFetched } = this.state;
@@ -38,7 +37,7 @@ class TodoList extends React.Component {
           <TodoForm createTodo={createTodo} />
           {
             todos.map((todo) => (
-              <TodoListItem
+              <TodoListItemContainer
                 todo={todo}
                 key={todo.id}
                 steps={stepsByTodoId(steps, todo.id)}
