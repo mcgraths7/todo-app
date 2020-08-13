@@ -67,3 +67,4 @@ Todo apps have a lot of the components you would find in most modern web applica
 
 I was not fully able to architect a solution without the redux toolkit, but could potentially remove the dependency with a little bit more experience using Redux.
 
+Most of the dependencies are for babel, as I prefer using the most modern version of Javascript available.
