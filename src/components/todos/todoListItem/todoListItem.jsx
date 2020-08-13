@@ -15,6 +15,7 @@ class TodoListItem extends React.Component {
     this.addTag = this.addTag.bind(this);
     this.addTagOnReturn = this.addTagOnReturn.bind(this);
     this.clearTagName = this.clearTagName.bind(this);
+    this.removeTag = this.removeTag.bind(this);
   }
 
   destroyTodo(e) {
@@ -43,6 +44,20 @@ class TodoListItem extends React.Component {
     });
   }
 
+  removeTag(e) {
+    e.preventDefault();
+    const { todo, updateTodo } = this.props;
+    const targetTag = e.currentTarget.value;
+    const index = todo.tagNames.indexOf(targetTag);
+    let newTagNames = [...todo.tagNames];
+    newTagNames = newTagNames.splice(1, index);
+    const newTodo = {
+      ...todo,
+      tagNames: newTagNames,
+    };
+    updateTodo(newTodo);
+  }
+
   addTag(e) {
     e.preventDefault();
     const { todo, updateTodo } = this.props;
@@ -62,21 +77,23 @@ class TodoListItem extends React.Component {
   }
 
   render() {
-    const { todo, steps } = this.props;
+    const { todo, steps, updateTodo } = this.props;
     const { detail, currentTagName } = this.state;
     const { tagNames, title } = todo;
+    const TagNames = () => (
+      tagNames.map((tagName) => <button key={tagName} type="button" onClick={this.removeTag} value={tagName}>{tagName}</button>)
+    );
     return (
       <li>
         <h3>{title}</h3>
-        <small>{tagNames.join(' | ')}</small>
+        <TagNames />
         <form>
           <label htmlFor="todoTags">
-            Add Tag
             <input type="text" name="todoTags" onChange={this.updateTagName} onKeyDown={this.addTagOnReturn} value={currentTagName} />
             <button type="button" onClick={this.addTag}>Add Tag!</button>
           </label>
         </form>
-        {detail ? <TodoListItemDetailView todo={todo} steps={steps} /> : ''}
+        {detail ? <TodoListItemDetailView todo={todo} steps={steps} updateTodo={updateTodo} /> : ''}
         <p>
           <span>
             <button type="button" onClick={this.toggleDetail}>Show/Hide Details</button>

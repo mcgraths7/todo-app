@@ -34846,6 +34846,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todoListItemDetailView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoListItemDetailView */ "./src/components/todos/todoListItem/todoListItemDetailView.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -34857,12 +34863,6 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.it
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34908,6 +34908,7 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
     _this.addTag = _this.addTag.bind(_assertThisInitialized(_this));
     _this.addTagOnReturn = _this.addTagOnReturn.bind(_assertThisInitialized(_this));
     _this.clearTagName = _this.clearTagName.bind(_assertThisInitialized(_this));
+    _this.removeTag = _this.removeTag.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -34944,14 +34945,34 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "removeTag",
+    value: function removeTag(e) {
+      e.preventDefault();
+      var _this$props2 = this.props,
+          todo = _this$props2.todo,
+          updateTodo = _this$props2.updateTodo;
+      var targetTag = e.currentTarget.value;
+      var index = todo.tagNames.indexOf(targetTag);
+
+      var newTagNames = _toConsumableArray(todo.tagNames);
+
+      newTagNames = newTagNames.splice(1, index);
+
+      var newTodo = _objectSpread(_objectSpread({}, todo), {}, {
+        tagNames: newTagNames
+      });
+
+      updateTodo(newTodo);
+    }
+  }, {
     key: "addTag",
     value: function addTag(e) {
       var _this2 = this;
 
       e.preventDefault();
-      var _this$props2 = this.props,
-          todo = _this$props2.todo,
-          updateTodo = _this$props2.updateTodo;
+      var _this$props3 = this.props,
+          todo = _this$props3.todo,
+          updateTodo = _this$props3.updateTodo;
       var currentTagName = this.state.currentTagName;
 
       var newTodo = _objectSpread({}, todo);
@@ -34971,17 +34992,32 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props3 = this.props,
-          todo = _this$props3.todo,
-          steps = _this$props3.steps;
+      var _this3 = this;
+
+      var _this$props4 = this.props,
+          todo = _this$props4.todo,
+          steps = _this$props4.steps,
+          updateTodo = _this$props4.updateTodo;
       var _this$state = this.state,
           detail = _this$state.detail,
           currentTagName = _this$state.currentTagName;
       var tagNames = todo.tagNames,
           title = todo.title;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, tagNames.join(' | ')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+
+      var TagNames = function TagNames() {
+        return tagNames.map(function (tagName) {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+            key: tagName,
+            type: "button",
+            onClick: _this3.removeTag,
+            value: tagName
+          }, tagName);
+        });
+      };
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TagNames, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "todoTags"
-      }, "Add Tag", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         name: "todoTags",
         onChange: this.updateTagName,
@@ -34992,7 +35028,8 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
         onClick: this.addTag
       }, "Add Tag!"))), detail ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_todoListItemDetailView__WEBPACK_IMPORTED_MODULE_1__["default"], {
         todo: todo,
-        steps: steps
+        steps: steps,
+        updateTodo: updateTodo
       }) : '', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: this.toggleDetail
