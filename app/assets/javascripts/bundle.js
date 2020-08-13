@@ -34956,7 +34956,7 @@ var TodoListItem = /*#__PURE__*/function (_React$Component) {
 
       var newTagNames = _toConsumableArray(todo.tagNames);
 
-      newTagNames = newTagNames.splice(1, index);
+      newTagNames.splice(index, 1);
 
       var newTodo = _objectSpread(_objectSpread({}, todo), {}, {
         tagNames: newTagNames
@@ -35553,6 +35553,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showTodo", function() { return showTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateTodo", function() { return updateTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyTodo", function() { return destroyTodo; });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var fetchTodos = function fetchTodos() {
   return $.ajax({
     method: 'GET',
@@ -35560,6 +35572,8 @@ var fetchTodos = function fetchTodos() {
   });
 };
 var createTodo = function createTodo(todo) {
+  var distinctTagNames = _toConsumableArray(new Set(todo.tagNames));
+
   return $.ajax({
     method: 'POST',
     url: '/api/todos',
@@ -35569,7 +35583,7 @@ var createTodo = function createTodo(todo) {
         title: todo.title,
         body: todo.body,
         isDone: todo.isDone,
-        tag_names: todo.tagNames
+        tag_names: distinctTagNames
       }
     }
   });
@@ -35581,6 +35595,8 @@ var showTodo = function showTodo(todo) {
   });
 };
 var updateTodo = function updateTodo(todo) {
+  var distinctTagNames = _toConsumableArray(new Set(todo.tagNames));
+
   return $.ajax({
     method: 'PATCH',
     url: "/api/todos/".concat(todo.id),
@@ -35590,7 +35606,7 @@ var updateTodo = function updateTodo(todo) {
         title: todo.title,
         body: todo.body,
         isDone: todo.isDone,
-        tag_names: todo.tagNames
+        tag_names: distinctTagNames
       }
     }
   });

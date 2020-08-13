@@ -1,24 +1,17 @@
-# README
+# This is a todo app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Details
+It utilizes a React/Redux front end, with the redux toolkit for managing actions and reducers.
 
-Things you may want to cover:
+The backend is a rails api, serving json objects using jbuilder
 
-* Ruby version
+## Setup details
 
-* System dependencies
+* Clone the repo
 
-* Configuration
+* yarn install (this project used yarn rather than npm)
 
-* Database creation
+* bundle install (both the rails api as well as the react portion can be built from the top level)
 
-* Database initialization
+* Bundle exec rails db:setup (creates and populates the database with some seed data, check "seeds.rb" for login info, or create a user)
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

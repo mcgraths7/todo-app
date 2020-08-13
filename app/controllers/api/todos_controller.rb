@@ -33,7 +33,9 @@ class Api::TodosController < ApplicationController
 
   def update
     @todo = set_todo
-    @todo.tag_names = todo_params[:tag_names]
+
+    tag_names = todo_params[:tag_names] ? todo_params[:tag_names] : []
+    @todo.tag_names = tag_names
     if @todo.update(title: todo_params[:title], body: todo_params[:body], isDone: todo_params[:isDone])
       render :show, status: :ok
     else

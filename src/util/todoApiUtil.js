@@ -5,8 +5,9 @@ export const fetchTodos = () => (
   })
 );
 
-export const createTodo = (todo) => (
-  $.ajax({
+export const createTodo = (todo) => {
+  const distinctTagNames = [...new Set(todo.tagNames)];
+  return $.ajax({
     method: 'POST',
     url: '/api/todos',
     data: {
@@ -15,11 +16,11 @@ export const createTodo = (todo) => (
         title: todo.title,
         body: todo.body,
         isDone: todo.isDone,
-        tag_names: todo.tagNames,
+        tag_names: distinctTagNames,
       },
     },
-  })
-);
+  });
+};
 
 export const showTodo = (todo) => (
   $.ajax({
@@ -28,8 +29,9 @@ export const showTodo = (todo) => (
   })
 );
 
-export const updateTodo = (todo) => (
-  $.ajax({
+export const updateTodo = (todo) => {
+  const distinctTagNames = [...new Set(todo.tagNames)];
+  return $.ajax({
     method: 'PATCH',
     url: `/api/todos/${todo.id}`,
     data: {
@@ -38,11 +40,11 @@ export const updateTodo = (todo) => (
         title: todo.title,
         body: todo.body,
         isDone: todo.isDone,
-        tag_names: todo.tagNames,
+        tag_names: distinctTagNames,
       },
     },
-  })
-);
+  });
+};
 
 export const destroyTodo = (todo) => (
   $.ajax({

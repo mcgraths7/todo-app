@@ -14,3 +14,7 @@
     <%= f.submit "Log In"  %>
   <% end %>
 <% end %>
+
+<% if message === 'Log In!' %>
+  <%= link_to 'New to the page? Sign up now!', signup_url %>
+<% end %>

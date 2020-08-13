@@ -49,8 +49,8 @@ class TodoListItem extends React.Component {
     const { todo, updateTodo } = this.props;
     const targetTag = e.currentTarget.value;
     const index = todo.tagNames.indexOf(targetTag);
-    let newTagNames = [...todo.tagNames];
-    newTagNames = newTagNames.splice(1, index);
+    const newTagNames = [...todo.tagNames];
+    newTagNames.splice(index, 1);
     const newTodo = {
       ...todo,
       tagNames: newTagNames,
